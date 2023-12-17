@@ -1,79 +1,110 @@
-
 <div class="result">
-    <input class="game1 game" type="text" value="2" id="game1" (click)="onGame1Click()" />
-    <input class="game2 game" type="text" value="3" id="game2" (click)="onGame2Click()" />
-    <input class="game3 game" type="text" value="2" id="game3" (click)="onGame3Click()" />
-    <input class="game4 game" type="text" value="3" id="game4" (click)="onGame4Click()" />
-    <input class="game5 game" type="text" value="3" id="game5" (click)="onGame5Click()" />
-  </div>
-  <div class="num_people">
-    <button type="button" class="addbtn" (click)="onAddClick()">+</button>
-    <button type="button" class="delbtn" (click)="onDeleteClick()">-</button>
-  </div>
-  <button type="button" class="caption" (click)="onFullscreenClick()">Fullscreen</button>
-  <div class="form">
-    <div class="left">
-      <div class="leftTop"></div>
-      <div class="leftDown">
-        <div class="info">
-          <label>
-            <input id="captain" type="checkbox"/>
-          </label>
-        </div>
-      </div>
-    </div>
-    <div class="right">
-      <div class="rightTop">
-        <li> </li>
-      </div>
-      <div class="rightDown">
-        <div class="info">
-          <label>
-            <input id="ticket" type="checkbox"/>
-            <div class="ticket"></div>
-            <label>
-              <input id="mission" type="checkbox"/>
-              <div class="mission"></div>
-            </label>
-          </label>
-        </div>
-        <div class="info">
-          <label>
-            <input id="ticket" type="checkbox"/>
-            <div class="ticket"></div>
-            <label>
-              <input id="mission" type="checkbox"/>
-              <div class="mission"></div>
-            </label>
-          </label>
-        </div>
-      </div>
-    </div>
-    
-    <div class="lakeDiv">
-      <div class="lake hiddenObj" id="firstLakeLady">
-        <div class="dropdown">
-          <select class="players">
-            <option *ngFor="let i of playerCounts" [value]="i">{{i}} 號</option>
-          </select>
-        </div>
-        <div class="gameLake" id="firstLake" (click)="onFirstLakeClick()"></div>
-      </div>
-      <div class="lake hiddenObj" id="secondLakeLady">
-        <div class="dropdown">
-          <select class="players">
-            <option *ngFor="let i of playerCounts" [value]="i">{{i}} 號</option>
-          </select>
-        </div>
-        <div class="gameLake" id="secondLake" (click)="onSecondLakeClick()"></div>
-      </div>
-      <div class="lake hiddenObj" id="thirdLakeLady">
-        <div class="dropdown">
-          <select class="players">
-            <option *ngFor="let i of playerCounts" [value]="i">{{i}} 號</option>
-          </select>
-        </div>
-        <div class="gameLake" id="thirdLake" (click)="onThirdLakeClick()"></div>
+  <input
+    class="game1 game"
+    type="text"
+    value="2"
+    id="game1"
+    (click)="onGame1Click()"
+  />
+  <input
+    class="game2 game"
+    type="text"
+    value="3"
+    id="game2"
+    (click)="onGame2Click()"
+  />
+  <input
+    class="game3 game"
+    type="text"
+    value="2"
+    id="game3"
+    (click)="onGame3Click()"
+  />
+  <input
+    class="game4 game"
+    type="text"
+    value="3"
+    id="game4"
+    (click)="onGame4Click()"
+  />
+  <input
+    class="game5 game"
+    type="text"
+    value="3"
+    id="game5"
+    (click)="onGame5Click()"
+  />
+</div>
+<div class="num_people">
+  <button type="button" class="addbtn" (click)="onAddClick()">+</button>
+  <button type="button" class="delbtn" (click)="onDeleteClick()">-</button>
+</div>
+<button type="button" class="caption" (click)="onFullscreenClick()">
+  Fullscreen
+</button>
+<div class="form">
+  <div class="left">
+    <div class="leftTop"></div>
+    <div class="leftDown">
+      <div class="info">
+        <label>
+          <input id="captain" type="checkbox" />
+        </label>
       </div>
     </div>
   </div>
+  <div class="right">
+    <div class="rightTop">
+      <li></li>
+    </div>
+    <div class="rightDown">
+      <div class="info">
+        <label>
+          <input id="ticket" type="checkbox" />
+          <div class="ticket"></div>
+          <label>
+            <input id="mission" type="checkbox" />
+            <div class="mission"></div>
+          </label>
+        </label>
+      </div>
+      <div class="info">
+        <label>
+          <input id="ticket" type="checkbox" />
+          <div class="ticket"></div>
+          <label>
+            <input id="mission" type="checkbox" />
+            <div class="mission"></div>
+          </label>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="lakeDiv">
+    <div class="lake hiddenObj" id="firstLakeLady">
+      <div class="dropdown">
+        <select class="players">
+          <option *ngFor="let i of playerCounts" [value]="i">{{ i }} 號</option>
+        </select>
+      </div>
+      <div class="gameLake" id="firstLake" (click)="onFirstLakeClick()"></div>
+    </div>
+    <div class="lake hiddenObj" id="secondLakeLady">
+      <div class="dropdown">
+        <select class="players">
+          <option *ngFor="let i of playerCounts" [value]="i">{{ i }} 號</option>
+        </select>
+      </div>
+      <div class="gameLake" id="secondLake" (click)="onSecondLakeClick()"></div>
+    </div>
+    <div class="lake hiddenObj" id="thirdLakeLady">
+      <div class="dropdown">
+        <select class="players">
+          <option *ngFor="let i of playerCounts" [value]="i">{{ i }} 號</option>
+        </select>
+      </div>
+      <div class="gameLake" id="thirdLake" (click)="onThirdLakeClick()"></div>
+    </div>
+  </div>
+</div>

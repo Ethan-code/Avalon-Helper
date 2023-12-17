@@ -33,9 +33,6 @@ export class LegacyHelperComponent implements AfterViewInit {
   private roles: any = {
     list: ['', '', '', '', ''],
   };
-  private captain: any = {
-    list: ['', '', '', '', ''],
-  };
   private vote: any = {
     list: ['', '', '', '', ''],
   };

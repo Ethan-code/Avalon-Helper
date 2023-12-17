@@ -48,8 +48,6 @@ export class LegacyHelperComponent implements AfterViewInit{
     var vote_html =
       "<div class='info'><label><input id='ticket' type='checkbox'/><div class='ticket'></div><label><input id='mission' type='checkbox'/><div class='mission'></div></label></label></div>";
 
-    var rows_html = '<li>{{num}}號</li>';
-
     $('.right').css('width', 70 * vote.list.length - 10 + 'px');
 
     let game1Max = 2;

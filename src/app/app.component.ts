@@ -298,69 +298,6 @@ export class AppComponent implements AfterViewInit {
       }
     });
 
-    function getResult(
-      result: number,
-      gameSelector: JQuery<HTMLElement>, // 假設你使用jQuery，請確保已引入相關型別定義
-      maxCount: number,
-      gameID: string
-    ) {
-      var div = document.getElementById(gameID);
-      if (div === null) return;
-      if (result === 0) {
-        result++;
-        div.classList.add('hideBefore');
-        div.style.backgroundImage =
-          "url('https://andyventure.com/wp-content/uploads/boardgame/avalon/marker_score.webp')";
-        div.style.backgroundColor = 'transparent';
-        div.style.backgroundRepeat = 'no-repeat';
-        div.style.backgroundSize = 'cover';
-        div.style.backgroundPosition = 'left';
-        gameSelector.attr('value', '');
-      } else if (result === 1) {
-        div.style.backgroundPosition = 'right';
-        gameSelector.css('font-size', '20px');
-        gameSelector.css('color', 'white');
-        result++;
-      } else if (result === 2) {
-        div.style.backgroundPosition = 'right';
-        gameSelector.attr('value', '2');
-        gameSelector.css('font-size', '40px');
-        gameSelector.css('color', 'white');
-        if (result === maxCount) {
-          result = 0;
-        } else {
-          result++;
-        }
-      } else if (result === 3) {
-        div.style.backgroundPosition = 'right';
-        gameSelector.attr('value', '');
-        gameSelector.attr('value', '3');
-        gameSelector.css('font-size', '40px');
-        gameSelector.css('color', 'white');
-        if (result === maxCount) {
-          result = 0;
-        } else {
-          result++;
-        }
-      } else if (result === 4) {
-        div.style.backgroundPosition = 'right';
-        gameSelector.attr('value', '4');
-        gameSelector.css('font-size', '40px');
-        gameSelector.css('color', 'white');
-        if (result === maxCount) {
-          result = 0;
-        } else {
-          result++;
-        }
-      } else {
-        div.style.backgroundPosition = 'right';
-        gameSelector.attr('value', '5');
-        gameSelector.css('font-size', '40px');
-        gameSelector.css('color', 'white');
-        result = 0;
-      }
-    }
-
     var b = 0;
     var game2 = $('.game2');
     game2.click(function () {

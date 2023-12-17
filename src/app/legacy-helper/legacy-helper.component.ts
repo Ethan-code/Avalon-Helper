@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component } from '@angular/core';
 import 'jquery';
 declare var $: JQueryStatic;
@@ -23,7 +24,7 @@ declare var $: JQueryStatic;
 @Component({
   selector: 'app-legacy-helper',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './legacy-helper.component.html',
   styleUrl: './legacy-helper.component.scss',
 })
@@ -52,7 +53,6 @@ export class LegacyHelperComponent implements AfterViewInit {
   private game4Max = 3;
   private game5Max = 3;
 
-  private playerCount = 5;
   private left = 440;
 
   private l1 = 0;
@@ -64,6 +64,11 @@ export class LegacyHelperComponent implements AfterViewInit {
   private c = 0;
   private d = 0;
   private e = 0;
+
+  public playerCount = 5;
+  public get playerCounts(): number[] {
+    return Array.from({ length: this.playerCount }, (_, index) => index + 1);
+  }
 
   ngAfterViewInit(): void {
     $('.right').css('width', 70 * this.vote.list.length - 10 + 'px');
@@ -96,14 +101,6 @@ export class LegacyHelperComponent implements AfterViewInit {
 
     this.showlist();
     $('.right').css('width', 70 * this.vote.list.length - 10 + 'px');
-    var selectElements = document.getElementsByClassName('players');
-    for (var i = 0; i < selectElements.length; i++) {
-      var select = selectElements[i];
-      var option = document.createElement('option');
-      option.value = this.roles.list.length;
-      option.text = this.roles.list.length + '號';
-      select.appendChild(option);
-    }
     if (this.roles.list.length >= 7) {
       var firstLakeLady = document.getElementById('firstLakeLady');
       if (firstLakeLady === null) return;

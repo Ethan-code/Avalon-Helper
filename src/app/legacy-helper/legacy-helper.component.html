@@ -49,15 +49,12 @@
         </div>
       </div>
     </div>
+    
     <div class="lakeDiv">
       <div class="lake hiddenObj" id="firstLakeLady">
         <div class="dropdown">
           <select class="players">
-            <option value="1">1號</option>
-            <option value="2">2號</option>
-            <option value="3">3號</option>
-            <option value="4">4號</option>
-            <option value="5">5號</option>
+            <option *ngFor="let i of playerCounts" [value]="i">{{i}} 號</option>
           </select>
         </div>
         <div class="gameLake" id="firstLake" (click)="onFirstLakeClick()"></div>
@@ -65,11 +62,7 @@
       <div class="lake hiddenObj" id="secondLakeLady">
         <div class="dropdown">
           <select class="players">
-            <option value="1">1號</option>
-            <option value="2">2號</option>
-            <option value="3">3號</option>
-            <option value="4">4號</option>
-            <option value="5">5號</option>
+            <option *ngFor="let i of playerCounts" [value]="i">{{i}} 號</option>
           </select>
         </div>
         <div class="gameLake" id="secondLake" (click)="onSecondLakeClick()"></div>
@@ -77,11 +70,7 @@
       <div class="lake hiddenObj" id="thirdLakeLady">
         <div class="dropdown">
           <select class="players">
-            <option value="1">1號</option>
-            <option value="2">2號</option>
-            <option value="3">3號</option>
-            <option value="4">4號</option>
-            <option value="5">5號</option>
+            <option *ngFor="let i of playerCounts" [value]="i">{{i}} 號</option>
           </select>
         </div>
         <div class="gameLake" id="thirdLake" (click)="onThirdLakeClick()"></div>

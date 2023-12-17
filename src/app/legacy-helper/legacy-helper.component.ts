@@ -28,6 +28,8 @@ declare var $: JQueryStatic;
   styleUrl: './legacy-helper.component.scss'
 })
 export class LegacyHelperComponent implements AfterViewInit{
+  private isFullscreen: boolean = false;
+
   ngAfterViewInit(): void {
     var roles: any = {};
     roles.list = ['', '', '', '', ''];
@@ -533,19 +535,14 @@ export class LegacyHelperComponent implements AfterViewInit{
         e = 0;
       }
     });
+  }
 
-    let fullscreen: any;
-    let fsEnter = document.getElementById('fullscr');
-    if (fsEnter === null) return;
-    fsEnter.addEventListener('click', function (e) {
-      e.preventDefault();
-      if (!fullscreen) {
-        fullscreen = true;
-        document.documentElement.requestFullscreen();
-      } else {
-        fullscreen = false;
-        document.exitFullscreen();
-      }
-    });
+  public onFullscreenClick(): void {
+    if (!this.isFullscreen) {
+      document.documentElement.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+    this.isFullscreen = !this.isFullscreen
   }
 }

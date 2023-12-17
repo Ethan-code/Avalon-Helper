@@ -1,5 +1,5 @@
 import { AfterViewInit, Component } from '@angular/core';
-import "jquery"; 
+import 'jquery';
 declare var $: JQueryStatic;
 
 // 新增功能:
@@ -25,513 +25,53 @@ declare var $: JQueryStatic;
   standalone: true,
   imports: [],
   templateUrl: './legacy-helper.component.html',
-  styleUrl: './legacy-helper.component.scss'
+  styleUrl: './legacy-helper.component.scss',
 })
-export class LegacyHelperComponent implements AfterViewInit{
+export class LegacyHelperComponent implements AfterViewInit {
   private isFullscreen: boolean = false;
+  private roles: any = {
+    list: ['', '', '', '', ''],
+  };
+  private captain: any = {
+    list: ['', '', '', '', ''],
+  };
+  private vote: any = {
+    list: ['', '', '', '', ''],
+  };
+
+  private roles_html =
+    "<li>{{num}}號 <input type='text' size='7'  placeholder='name'  /></li>";
+  private captain_html =
+    "<div class='info'><li><label>{{num}}號派票  <input id='captain' type='checkbox'/> </label></li></div>";
+  private vote_html =
+    "<div class='info'><label><input id='ticket' type='checkbox'/><div class='ticket'></div><label><input id='mission' type='checkbox'/><div class='mission'></div></label></label></div>";
+
+  private game1Max = 2;
+  private game2Max = 3;
+  private game3Max = 2;
+  private game4Max = 3;
+  private game5Max = 3;
+
+  private playerCount = 5;
+  private left = 440;
+
+  private l1 = 0;
+  private l2 = 0;
+  private l3 = 0;
+
+  private a = 0;
+  private b = 0;
+  private c = 0;
+  private d = 0;
+  private e = 0;
 
   ngAfterViewInit(): void {
-    var roles: any = {};
-    roles.list = ['', '', '', '', ''];
+    $('.right').css('width', 70 * this.vote.list.length - 10 + 'px');
 
-    var captain: any = {};
-    captain.list = ['', '', '', '', ''];
-
-    var vote: any = {};
-    vote.list = ['', '', '', '', ''];
-
-    var roles_html =
-      "<li>{{num}}號 <input type='text' size='7'  placeholder='name'  /></li>";
-    var captain_html =
-      "<div class='info'><li><label>{{num}}號派票  <input id='captain' type='checkbox'/> </label></li></div>";
-
-    var vote_html =
-      "<div class='info'><label><input id='ticket' type='checkbox'/><div class='ticket'></div><label><input id='mission' type='checkbox'/><div class='mission'></div></label></label></div>";
-
-    $('.right').css('width', 70 * vote.list.length - 10 + 'px');
-
-    let game1Max = 2;
-    let game2Max = 3;
-    let game3Max = 2;
-    let game4Max = 3;
-    let game5Max = 3;
-    //刪除並重新產生清單中所有項目
-    function showlist() {
-      $('.rightTop').html('');
-      $('.leftDown').html('');
-      $('.rightDown').html('');
-
-      //把每個項目做出來
-      for (var i = 0; i < roles.list.length; i++) {
-        //取代模板位置成資料replace(要取代的,取代成...)
-        var new_role_html = roles_html.replace('{{num}}', (i + 1).toString());
-        $('.rightTop').append(new_role_html);
-      }
-
-      for (var i = 0; i < 25; i++) {
-        var new_caption_html = captain_html.replace(
-          '{{num}}',
-          ((i % roles.list.length) + 1).toString()
-        );
-        $('.leftDown').append(new_caption_html);
-      }
-
-      for (var i = 1; i <= vote.list.length; i++) {
-        for (var j = 1; j <= 25; j++) {
-          $('.rightDown').append(vote_html);
-        }
-      }
-
-      if (roles.list.length == 6) {
-        $('.game').css('font-size', '50px');
-        $('.game').css('color', 'navy');
-        $('.game1').attr('value', '2');
-        $('.game2').attr('value', '3');
-        $('.game3').attr('value', '4');
-        $('.game4').attr('value', '3');
-        $('.game5').attr('value', '4');
-        game1Max = 2;
-        game2Max = 3;
-        game3Max = 4;
-        game4Max = 3;
-        game5Max = 4;
-      } else if (roles.list.length == 7) {
-        $('.game').css('font-size', '50px');
-        $('.game').css('color', 'navy');
-        $('.game1').attr('value', '2');
-        $('.game2').attr('value', '3');
-        $('.game3').attr('value', '3');
-        $('.game4').attr('value', '4');
-        $('.game5').attr('value', '4');
-        game1Max = 2;
-        game2Max = 3;
-        game3Max = 3;
-        game4Max = 4;
-        game5Max = 4;
-      } else if (roles.list.length >= 8) {
-        $('.game').css('font-size', '50px');
-        $('.game').css('color', 'navy');
-        $('.game1').attr('value', '3');
-        $('.game2').attr('value', '4');
-        $('.game3').attr('value', '4');
-        $('.game4').attr('value', '5');
-        $('.game5').attr('value', '5');
-        game1Max = 3;
-        game2Max = 4;
-        game3Max = 4;
-        game4Max = 5;
-        game5Max = 5;
-      } else {
-        $('.game').css('font-size', '50px');
-        $('.game').css('color', 'navy');
-        $('.game1').attr('value', '2');
-        $('.game2').attr('value', '3');
-        $('.game3').attr('value', '2');
-        $('.game4').attr('value', '3');
-        $('.game5').attr('value', '3');
-        game1Max = 2;
-        game2Max = 3;
-        game3Max = 2;
-        game4Max = 3;
-        game5Max = 3;
-      }
-    }
-
-    showlist();
+    this.showlist();
 
     $('.game').on('focus', () => {
       $(this).blur();
-    });
-
-    var playerCount = 5;
-    var left = 440;
-    $('.addbtn').click(function () {
-      if (roles.list.length < 10) {
-        roles.list.push('');
-        vote.list.push('');
-        left += 70;
-        var lakeDiv = $('.lakeDiv');
-        lakeDiv.css('left', left + 'px');
-        playerCount++;
-      }
-
-      showlist();
-      $('.right').css('width', 70 * vote.list.length - 10 + 'px');
-      var selectElements = document.getElementsByClassName('players');
-      for (var i = 0; i < selectElements.length; i++) {
-        var select = selectElements[i];
-        var option = document.createElement('option');
-        option.value = roles.list.length;
-        option.text = roles.list.length + '號';
-        select.appendChild(option);
-      }
-      if (roles.list.length >= 7) {
-        var firstLakeLady = document.getElementById('firstLakeLady');
-        if (firstLakeLady === null) return;
-        firstLakeLady.classList.remove('hiddenObj');
-      }
-    });
-
-    $('.delbtn').click(function () {
-      if (roles.list.length > 5) {
-        roles.list.pop('');
-        vote.list.pop('');
-        left -= 70;
-        var lakeDiv = $('.lakeDiv');
-        lakeDiv.css('left', left + 'px');
-        playerCount--;
-      }
-      showlist();
-      $('.right').css('width', 70 * vote.list.length - 10 + 'px');
-      if (roles.list.length < 7) {
-        var elements = document.getElementsByClassName('lake');
-        for (var i = 0; i < elements.length; i++) {
-          elements[i].classList.add('hiddenObj');
-        }
-      }
-    });
-
-    var l1 = 0;
-    var l2 = 0;
-    var l3 = 0;
-    $('#firstLake').click(function () {
-      var div = document.getElementById('firstLake');
-      if (div === null) return;
-      if (l1 === 0) {
-        l1++;
-        div.style.backgroundPosition = 'center';
-        var secondLakeLady = document.getElementById('secondLakeLady');
-        if (secondLakeLady === null) return;
-        secondLakeLady.classList.remove('hiddenObj');
-      } else if (l1 === 1) {
-        div.style.backgroundPosition = 'right';
-        l1--;
-      }
-    });
-    $('#secondLake').click(function () {
-      var div = document.getElementById('secondLake');
-      if (div === null) return;
-      if (l2 === 0) {
-        l2++;
-        div.style.backgroundPosition = 'center';
-        var thirdLakeLady = document.getElementById('thirdLakeLady');
-        if (thirdLakeLady === null) return;
-        thirdLakeLady.classList.remove('hiddenObj');
-      } else if (l2 === 1) {
-        div.style.backgroundPosition = 'right';
-        l2--;
-      }
-    });
-    $('#thirdLake').click(function () {
-      var div = document.getElementById('thirdLake');
-      if (div === null) return;
-      if (l3 === 0) {
-        l3++;
-        div.style.backgroundPosition = 'center';
-      } else if (l3 === 1) {
-        div.style.backgroundPosition = 'right';
-        l3--;
-      }
-    });
-
-    var a = 0;
-
-    $('.game1').click(function () {
-      var div = document.getElementById('game1');
-      if (div === null) return;
-      if (a === 0) {
-        a++;
-        div.classList.add('hideBefore');
-        div.style.backgroundImage =
-          "url('https://andyventure.com/wp-content/uploads/boardgame/avalon/marker_score.webp')";
-        div.style.backgroundColor = 'transparent';
-        div.style.backgroundRepeat = 'no-repeat';
-        div.style.backgroundSize = 'cover';
-        div.style.backgroundPosition = 'left';
-        $('.game1').attr('value', '');
-      } else if (a === 1) {
-        div.style.backgroundPosition = 'right';
-        $('.game1').css('font-size', '20px');
-        $('.game1').css('color', 'white');
-        a++;
-      } else if (a === 2) {
-        div.style.backgroundPosition = 'right';
-        $('.game1').attr('value', '2');
-        $('.game1').css('font-size', '40px');
-        $('.game1').css('color', 'white');
-        if (a === game1Max) {
-          a = 0;
-        } else {
-          a++;
-        }
-      } else if (a === 3) {
-        div.style.backgroundPosition = 'right';
-        $('.game1').attr('value', '');
-        $('.game1').attr('value', '3');
-        $('.game1').css('font-size', '40px');
-        $('.game1').css('color', 'white');
-        if (a === game1Max) {
-          a = 0;
-        } else {
-          a++;
-        }
-      } else if (a === 4) {
-        div.style.backgroundPosition = 'right';
-        $('.game1').attr('value', '4');
-        $('.game1').css('font-size', '40px');
-        $('.game1').css('color', 'white');
-        if (a === game1Max) {
-          a = 0;
-        } else {
-          a++;
-        }
-      } else {
-        div.style.backgroundPosition = 'right';
-        $('.game1').attr('value', '5');
-        $('.game1').css('font-size', '40px');
-        $('.game1').css('color', 'white');
-        a = 0;
-      }
-    });
-
-    var b = 0;
-    var game2 = $('.game2');
-    game2.click(function () {
-      var div = document.getElementById('game2');
-      if (div === null) return;
-      if (b === 0) {
-        b++;
-        div.classList.add('hideBefore');
-        div.style.backgroundImage =
-          "url('https://andyventure.com/wp-content/uploads/boardgame/avalon/marker_score.webp')";
-        div.style.backgroundColor = 'transparent';
-        div.style.backgroundRepeat = 'no-repeat';
-        div.style.backgroundSize = 'cover';
-        div.style.backgroundPosition = 'left';
-        game2.attr('value', '');
-      } else if (b === 1) {
-        div.style.backgroundPosition = 'right';
-        $('.game2').css('font-size', '20px');
-        $('.game2').css('color', 'white');
-        b++;
-      } else if (b === 2) {
-        div.style.backgroundPosition = 'right';
-        $('.game2').attr('value', '2');
-        $('.game2').css('font-size', '40px');
-        $('.game2').css('color', 'white');
-        if (b === game2Max) {
-          b = 0;
-        } else {
-          b++;
-        }
-      } else if (b === 3) {
-        div.style.backgroundPosition = 'right';
-        $('.game2').attr('value', '');
-        $('.game2').attr('value', '3');
-        $('.game2').css('font-size', '40px');
-        $('.game2').css('color', 'white');
-        if (b === game2Max) {
-          b = 0;
-        } else {
-          b++;
-        }
-      } else if (b === 4) {
-        div.style.backgroundPosition = 'right';
-        $('.game2').attr('value', '4');
-        $('.game2').css('font-size', '40px');
-        $('.game2').css('color', 'white');
-        if (b === game2Max) {
-          b = 0;
-        } else {
-          b++;
-        }
-      } else {
-        div.style.backgroundPosition = 'right';
-        $('.game2').attr('value', '5');
-        $('.game2').css('font-size', '40px');
-        $('.game2').css('color', 'white');
-        b = 0;
-      }
-    });
-
-    var c = 0;
-    var game3 = $('.game3');
-    game3.click(function () {
-      var div = document.getElementById('game3');
-      if (div === null) return;
-      if (c === 0) {
-        c++;
-        div.classList.add('hideBefore');
-        div.style.backgroundImage =
-          "url('https://andyventure.com/wp-content/uploads/boardgame/avalon/marker_score.webp')";
-        div.style.backgroundColor = 'transparent';
-        div.style.backgroundRepeat = 'no-repeat';
-        div.style.backgroundSize = 'cover';
-        div.style.backgroundPosition = 'left';
-        game3.attr('value', '');
-      } else if (c === 1) {
-        div.style.backgroundPosition = 'right';
-        game3.css('font-size', '20px');
-        game3.css('color', 'white');
-        c++;
-      } else if (c === 2) {
-        div.style.backgroundPosition = 'right';
-        game3.attr('value', '2');
-        game3.css('font-size', '40px');
-        game3.css('color', 'white');
-        if (c === game3Max) {
-          c = 0;
-        } else {
-          c++;
-        }
-      } else if (c === 3) {
-        div.style.backgroundPosition = 'right';
-        game3.attr('value', '');
-        game3.attr('value', '3');
-        game3.css('font-size', '40px');
-        game3.css('color', 'white');
-        if (c === game3Max) {
-          c = 0;
-        } else {
-          c++;
-        }
-      } else if (c === 4) {
-        div.style.backgroundPosition = 'right';
-        game3.attr('value', '4');
-        game3.css('font-size', '40px');
-        game3.css('color', 'white');
-        if (c === game3Max) {
-          c = 0;
-        } else {
-          c++;
-        }
-      } else {
-        div.style.backgroundPosition = 'right';
-        game3.attr('value', '5');
-        game3.css('font-size', '40px');
-        game3.css('color', 'white');
-        c = 0;
-      }
-    });
-
-    var d = 0;
-    var game4 = $('.game4');
-    game4.click(function () {
-      var div = document.getElementById('game4');
-      if (div === null) return;
-      if (d === 0) {
-        d++;
-        div.classList.add('hideBefore');
-        div.style.backgroundImage =
-          "url('https://andyventure.com/wp-content/uploads/boardgame/avalon/marker_score.webp')";
-        div.style.backgroundColor = 'transparent';
-        div.style.backgroundRepeat = 'no-repeat';
-        div.style.backgroundSize = 'cover';
-        div.style.backgroundPosition = 'left';
-        game4.attr('value', '');
-      } else if (d === 1) {
-        div.style.backgroundPosition = 'right';
-        game4.css('font-size', '20px');
-        game4.css('color', 'white');
-        d++;
-      } else if (d === 2) {
-        div.style.backgroundPosition = 'right';
-        game4.attr('value', '2');
-        game4.css('font-size', '40px');
-        game4.css('color', 'white');
-        if (d === game4Max) {
-          d = 0;
-        } else {
-          d++;
-        }
-      } else if (d === 3) {
-        div.style.backgroundPosition = 'right';
-        game4.attr('value', '');
-        game4.attr('value', '3');
-        game4.css('font-size', '40px');
-        game4.css('color', 'white');
-        if (d === game4Max) {
-          d = 0;
-        } else {
-          d++;
-        }
-      } else if (d === 4) {
-        div.style.backgroundPosition = 'right';
-        game4.attr('value', '4');
-        game4.css('font-size', '40px');
-        game4.css('color', 'white');
-        if (d === game4Max) {
-          d = 0;
-        } else {
-          d++;
-        }
-      } else {
-        div.style.backgroundPosition = 'right';
-        game4.attr('value', '5');
-        game4.css('font-size', '40px');
-        game4.css('color', 'white');
-        d = 0;
-      }
-    });
-
-    var e = 0;
-    var game5 = $('.game5');
-    game5.click(function () {
-      var div = document.getElementById('game5');
-      if (div === null) return;
-      if (e === 0) {
-        e++;
-        div.classList.add('hideBefore');
-        div.style.backgroundImage =
-          "url('https://andyventure.com/wp-content/uploads/boardgame/avalon/marker_score.webp')";
-        div.style.backgroundColor = 'transparent';
-        div.style.backgroundRepeat = 'no-repeat';
-        div.style.backgroundSize = 'cover';
-        div.style.backgroundPosition = 'left';
-        game5.attr('value', '');
-      } else if (e === 1) {
-        div.style.backgroundPosition = 'right';
-        game5.css('font-size', '20px');
-        game5.css('color', 'white');
-        e++;
-      } else if (e === 2) {
-        div.style.backgroundPosition = 'right';
-        game5.attr('value', '2');
-        game5.css('font-size', '40px');
-        game5.css('color', 'white');
-        if (e === game5Max) {
-          e = 0;
-        } else {
-          e++;
-        }
-      } else if (e === 3) {
-        div.style.backgroundPosition = 'right';
-        game5.attr('value', '');
-        game5.attr('value', '3');
-        game5.css('font-size', '40px');
-        game5.css('color', 'white');
-        if (e === game5Max) {
-          e = 0;
-        } else {
-          e++;
-        }
-      } else if (e === 4) {
-        div.style.backgroundPosition = 'right';
-        game5.attr('value', '4');
-        game5.css('font-size', '40px');
-        game5.css('color', 'white');
-        if (e === game5Max) {
-          e = 0;
-        } else {
-          e++;
-        }
-      } else {
-        div.style.backgroundPosition = 'right';
-        game5.attr('value', '5');
-        game5.css('font-size', '40px');
-        game5.css('color', 'white');
-        e = 0;
-      }
     });
   }
 
@@ -541,6 +81,470 @@ export class LegacyHelperComponent implements AfterViewInit{
     } else {
       document.exitFullscreen();
     }
-    this.isFullscreen = !this.isFullscreen
+    this.isFullscreen = !this.isFullscreen;
+  }
+
+  public onAddClick() {
+    if (this.roles.list.length < 10) {
+      this.roles.list.push('');
+      this.vote.list.push('');
+      this.left += 70;
+      var lakeDiv = $('.lakeDiv');
+      lakeDiv.css('left', this.left + 'px');
+      this.playerCount++;
+    }
+
+    this.showlist();
+    $('.right').css('width', 70 * this.vote.list.length - 10 + 'px');
+    var selectElements = document.getElementsByClassName('players');
+    for (var i = 0; i < selectElements.length; i++) {
+      var select = selectElements[i];
+      var option = document.createElement('option');
+      option.value = this.roles.list.length;
+      option.text = this.roles.list.length + '號';
+      select.appendChild(option);
+    }
+    if (this.roles.list.length >= 7) {
+      var firstLakeLady = document.getElementById('firstLakeLady');
+      if (firstLakeLady === null) return;
+      firstLakeLady.classList.remove('hiddenObj');
+    }
+  }
+
+  public onDeleteClick() {
+    if (this.roles.list.length > 5) {
+      this.roles.list.pop('');
+      this.vote.list.pop('');
+      this.left -= 70;
+      var lakeDiv = $('.lakeDiv');
+      lakeDiv.css('left', this.left + 'px');
+      this.playerCount--;
+    }
+    this.showlist();
+    $('.right').css('width', 70 * this.vote.list.length - 10 + 'px');
+    if (this.roles.list.length < 7) {
+      var elements = document.getElementsByClassName('lake');
+      for (var i = 0; i < elements.length; i++) {
+        elements[i].classList.add('hiddenObj');
+      }
+    }
+  }
+
+  public onGame1Click() {
+    var div = document.getElementById('game1');
+    if (div === null) return;
+    if (this.a === 0) {
+      this.a++;
+      div.classList.add('hideBefore');
+      div.style.backgroundImage =
+        "url('https://andyventure.com/wp-content/uploads/boardgame/avalon/marker_score.webp')";
+      div.style.backgroundColor = 'transparent';
+      div.style.backgroundRepeat = 'no-repeat';
+      div.style.backgroundSize = 'cover';
+      div.style.backgroundPosition = 'left';
+      $('.game1').attr('value', '');
+    } else if (this.a === 1) {
+      div.style.backgroundPosition = 'right';
+      $('.game1').css('font-size', '20px');
+      $('.game1').css('color', 'white');
+      this.a++;
+    } else if (this.a === 2) {
+      div.style.backgroundPosition = 'right';
+      $('.game1').attr('value', '2');
+      $('.game1').css('font-size', '40px');
+      $('.game1').css('color', 'white');
+      if (this.a === this.game1Max) {
+        this.a = 0;
+      } else {
+        this.a++;
+      }
+    } else if (this.a === 3) {
+      div.style.backgroundPosition = 'right';
+      $('.game1').attr('value', '');
+      $('.game1').attr('value', '3');
+      $('.game1').css('font-size', '40px');
+      $('.game1').css('color', 'white');
+      if (this.a === this.game1Max) {
+        this.a = 0;
+      } else {
+        this.a++;
+      }
+    } else if (this.a === 4) {
+      div.style.backgroundPosition = 'right';
+      $('.game1').attr('value', '4');
+      $('.game1').css('font-size', '40px');
+      $('.game1').css('color', 'white');
+      if (this.a === this.game1Max) {
+        this.a = 0;
+      } else {
+        this.a++;
+      }
+    } else {
+      div.style.backgroundPosition = 'right';
+      $('.game1').attr('value', '5');
+      $('.game1').css('font-size', '40px');
+      $('.game1').css('color', 'white');
+      this.a = 0;
+    }
+  }
+
+  public onGame2Click() {
+    var div = document.getElementById('game2');
+    if (div === null) return;
+    if (this.b === 0) {
+      this.b++;
+      div.classList.add('hideBefore');
+      div.style.backgroundImage =
+        "url('https://andyventure.com/wp-content/uploads/boardgame/avalon/marker_score.webp')";
+      div.style.backgroundColor = 'transparent';
+      div.style.backgroundRepeat = 'no-repeat';
+      div.style.backgroundSize = 'cover';
+      div.style.backgroundPosition = 'left';
+      $('.game2').attr('value', '');
+    } else if (this.b === 1) {
+      div.style.backgroundPosition = 'right';
+      $('.game2').css('font-size', '20px');
+      $('.game2').css('color', 'white');
+      this.b++;
+    } else if (this.b === 2) {
+      div.style.backgroundPosition = 'right';
+      $('.game2').attr('value', '2');
+      $('.game2').css('font-size', '40px');
+      $('.game2').css('color', 'white');
+      if (this.b === this.game2Max) {
+        this.b = 0;
+      } else {
+        this.b++;
+      }
+    } else if (this.b === 3) {
+      div.style.backgroundPosition = 'right';
+      $('.game2').attr('value', '');
+      $('.game2').attr('value', '3');
+      $('.game2').css('font-size', '40px');
+      $('.game2').css('color', 'white');
+      if (this.b === this.game2Max) {
+        this.b = 0;
+      } else {
+        this.b++;
+      }
+    } else if (this.b === 4) {
+      div.style.backgroundPosition = 'right';
+      $('.game2').attr('value', '4');
+      $('.game2').css('font-size', '40px');
+      $('.game2').css('color', 'white');
+      if (this.b === this.game2Max) {
+        this.b = 0;
+      } else {
+        this.b++;
+      }
+    } else {
+      div.style.backgroundPosition = 'right';
+      $('.game2').attr('value', '5');
+      $('.game2').css('font-size', '40px');
+      $('.game2').css('color', 'white');
+      this.b = 0;
+    }
+  }
+
+  public onGame3Click() {
+    var div = document.getElementById('game3');
+    if (div === null) return;
+    if (this.c === 0) {
+      this.c++;
+      div.classList.add('hideBefore');
+      div.style.backgroundImage =
+        "url('https://andyventure.com/wp-content/uploads/boardgame/avalon/marker_score.webp')";
+      div.style.backgroundColor = 'transparent';
+      div.style.backgroundRepeat = 'no-repeat';
+      div.style.backgroundSize = 'cover';
+      div.style.backgroundPosition = 'left';
+      $('.game3').attr('value', '');
+    } else if (this.c === 1) {
+      div.style.backgroundPosition = 'right';
+      $('.game3').css('font-size', '20px');
+      $('.game3').css('color', 'white');
+      this.c++;
+    } else if (this.c === 2) {
+      div.style.backgroundPosition = 'right';
+      $('.game3').attr('value', '2');
+      $('.game3').css('font-size', '40px');
+      $('.game3').css('color', 'white');
+      if (this.c === this.game3Max) {
+        this.c = 0;
+      } else {
+        this.c++;
+      }
+    } else if (this.c === 3) {
+      div.style.backgroundPosition = 'right';
+      $('.game3').attr('value', '');
+      $('.game3').attr('value', '3');
+      $('.game3').css('font-size', '40px');
+      $('.game3').css('color', 'white');
+      if (this.c === this.game3Max) {
+        this.c = 0;
+      } else {
+        this.c++;
+      }
+    } else if (this.c === 4) {
+      div.style.backgroundPosition = 'right';
+      $('.game3').attr('value', '4');
+      $('.game3').css('font-size', '40px');
+      $('.game3').css('color', 'white');
+      if (this.c === this.game3Max) {
+        this.c = 0;
+      } else {
+        this.c++;
+      }
+    } else {
+      div.style.backgroundPosition = 'right';
+      $('.game3').attr('value', '5');
+      $('.game3').css('font-size', '40px');
+      $('.game3').css('color', 'white');
+      this.c = 0;
+    }
+  }
+
+  public onGame4Click() {
+    var div = document.getElementById('game4');
+    if (div === null) return;
+    if (this.d === 0) {
+      this.d++;
+      div.classList.add('hideBefore');
+      div.style.backgroundImage =
+        "url('https://andyventure.com/wp-content/uploads/boardgame/avalon/marker_score.webp')";
+      div.style.backgroundColor = 'transparent';
+      div.style.backgroundRepeat = 'no-repeat';
+      div.style.backgroundSize = 'cover';
+      div.style.backgroundPosition = 'left';
+      $('.game4').attr('value', '');
+    } else if (this.d === 1) {
+      div.style.backgroundPosition = 'right';
+      $('.game4').css('font-size', '20px');
+      $('.game4').css('color', 'white');
+      this.d++;
+    } else if (this.d === 2) {
+      div.style.backgroundPosition = 'right';
+      $('.game4').attr('value', '2');
+      $('.game4').css('font-size', '40px');
+      $('.game4').css('color', 'white');
+      if (this.d === this.game4Max) {
+        this.d = 0;
+      } else {
+        this.d++;
+      }
+    } else if (this.d === 3) {
+      div.style.backgroundPosition = 'right';
+      $('.game4').attr('value', '');
+      $('.game4').attr('value', '3');
+      $('.game4').css('font-size', '40px');
+      $('.game4').css('color', 'white');
+      if (this.d === this.game4Max) {
+        this.d = 0;
+      } else {
+        this.d++;
+      }
+    } else if (this.d === 4) {
+      div.style.backgroundPosition = 'right';
+      $('.game4').attr('value', '4');
+      $('.game4').css('font-size', '40px');
+      $('.game4').css('color', 'white');
+      if (this.d === this.game4Max) {
+        this.d = 0;
+      } else {
+        this.d++;
+      }
+    } else {
+      div.style.backgroundPosition = 'right';
+      $('.game4').attr('value', '5');
+      $('.game4').css('font-size', '40px');
+      $('.game4').css('color', 'white');
+      this.d = 0;
+    }
+  }
+
+  public onGame5Click() {
+    var div = document.getElementById('game5');
+    if (div === null) return;
+    if (this.e === 0) {
+      this.e++;
+      div.classList.add('hideBefore');
+      div.style.backgroundImage =
+        "url('https://andyventure.com/wp-content/uploads/boardgame/avalon/marker_score.webp')";
+      div.style.backgroundColor = 'transparent';
+      div.style.backgroundRepeat = 'no-repeat';
+      div.style.backgroundSize = 'cover';
+      div.style.backgroundPosition = 'left';
+      $('.game5').attr('value', '');
+    } else if (this.e === 1) {
+      div.style.backgroundPosition = 'right';
+      $('.game5').css('font-size', '20px');
+      $('.game5').css('color', 'white');
+      this.e++;
+    } else if (this.e === 2) {
+      div.style.backgroundPosition = 'right';
+      $('.game5').attr('value', '2');
+      $('.game5').css('font-size', '40px');
+      $('.game5').css('color', 'white');
+      if (this.e === this.game5Max) {
+        this.e = 0;
+      } else {
+        this.e++;
+      }
+    } else if (this.e === 3) {
+      div.style.backgroundPosition = 'right';
+      $('.game5').attr('value', '');
+      $('.game5').attr('value', '3');
+      $('.game5').css('font-size', '40px');
+      $('.game5').css('color', 'white');
+      if (this.e === this.game5Max) {
+        this.e = 0;
+      } else {
+        this.e++;
+      }
+    } else if (this.e === 4) {
+      div.style.backgroundPosition = 'right';
+      $('.game5').attr('value', '4');
+      $('.game5').css('font-size', '40px');
+      $('.game5').css('color', 'white');
+      if (this.e === this.game5Max) {
+        this.e = 0;
+      } else {
+        this.e++;
+      }
+    } else {
+      div.style.backgroundPosition = 'right';
+      $('.game5').attr('value', '5');
+      $('.game5').css('font-size', '40px');
+      $('.game5').css('color', 'white');
+      this.e = 0;
+    }
+  }
+
+  public onFirstLakeClick() {
+    var div = document.getElementById('firstLake');
+    if (div === null) return;
+    if (this.l1 === 0) {
+      this.l1++;
+      div.style.backgroundPosition = 'center';
+      var secondLakeLady = document.getElementById('secondLakeLady');
+      if (secondLakeLady === null) return;
+      secondLakeLady.classList.remove('hiddenObj');
+    } else if (this.l1 === 1) {
+      div.style.backgroundPosition = 'right';
+      this.l1--;
+    }
+  }
+
+  public onSecondLakeClick() {
+    var div = document.getElementById('secondLake');
+    if (div === null) return;
+    if (this.l2 === 0) {
+      this.l2++;
+      div.style.backgroundPosition = 'center';
+      var thirdLakeLady = document.getElementById('thirdLakeLady');
+      if (thirdLakeLady === null) return;
+      thirdLakeLady.classList.remove('hiddenObj');
+    } else if (this.l2 === 1) {
+      div.style.backgroundPosition = 'right';
+      this.l2--;
+    }
+  }
+
+  public onThirdLakeClick() {
+    var div = document.getElementById('thirdLake');
+    if (div === null) return;
+    if (this.l3 === 0) {
+      this.l3++;
+      div.style.backgroundPosition = 'center';
+    } else if (this.l3 === 1) {
+      div.style.backgroundPosition = 'right';
+      this.l3--;
+    }
+  }
+
+  private showlist() {
+    //刪除並重新產生清單中所有項目
+
+    $('.rightTop').html('');
+    $('.leftDown').html('');
+    $('.rightDown').html('');
+
+    //把每個項目做出來
+    for (var i = 0; i < this.roles.list.length; i++) {
+      //取代模板位置成資料replace(要取代的,取代成...)
+      var new_role_html = this.roles_html.replace(
+        '{{num}}',
+        (i + 1).toString()
+      );
+      $('.rightTop').append(new_role_html);
+    }
+
+    for (var i = 0; i < 25; i++) {
+      var new_caption_html = this.captain_html.replace(
+        '{{num}}',
+        ((i % this.roles.list.length) + 1).toString()
+      );
+      $('.leftDown').append(new_caption_html);
+    }
+
+    for (var i = 1; i <= this.vote.list.length; i++) {
+      for (var j = 1; j <= 25; j++) {
+        $('.rightDown').append(this.vote_html);
+      }
+    }
+
+    if (this.roles.list.length == 6) {
+      $('.game').css('font-size', '50px');
+      $('.game').css('color', 'navy');
+      $('.game1').attr('value', '2');
+      $('.game2').attr('value', '3');
+      $('.game3').attr('value', '4');
+      $('.game4').attr('value', '3');
+      $('.game5').attr('value', '4');
+      this.game1Max = 2;
+      this.game2Max = 3;
+      this.game3Max = 4;
+      this.game4Max = 3;
+      this.game5Max = 4;
+    } else if (this.roles.list.length == 7) {
+      $('.game').css('font-size', '50px');
+      $('.game').css('color', 'navy');
+      $('.game1').attr('value', '2');
+      $('.game2').attr('value', '3');
+      $('.game3').attr('value', '3');
+      $('.game4').attr('value', '4');
+      $('.game5').attr('value', '4');
+      this.game1Max = 2;
+      this.game2Max = 3;
+      this.game3Max = 3;
+      this.game4Max = 4;
+      this.game5Max = 4;
+    } else if (this.roles.list.length >= 8) {
+      $('.game').css('font-size', '50px');
+      $('.game').css('color', 'navy');
+      $('.game1').attr('value', '3');
+      $('.game2').attr('value', '4');
+      $('.game3').attr('value', '4');
+      $('.game4').attr('value', '5');
+      $('.game5').attr('value', '5');
+      this.game1Max = 3;
+      this.game2Max = 4;
+      this.game3Max = 4;
+      this.game4Max = 5;
+      this.game5Max = 5;
+    } else {
+      $('.game').css('font-size', '50px');
+      $('.game').css('color', 'navy');
+      $('.game1').attr('value', '2');
+      $('.game2').attr('value', '3');
+      $('.game3').attr('value', '2');
+      $('.game4').attr('value', '3');
+      $('.game5').attr('value', '3');
+      this.game1Max = 2;
+      this.game2Max = 3;
+      this.game3Max = 2;
+      this.game4Max = 3;
+      this.game5Max = 3;
+    }
   }
 }

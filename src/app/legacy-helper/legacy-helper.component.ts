@@ -25,7 +25,13 @@ enum RoundResult {
   NotYet = 'NotYet',
   Success = 'Success',
   Failure = 'Failure',
-  NoPlay = 'NoPlay'
+  NoPlay = 'NoPlay',
+}
+
+enum LakeResult {
+  NotYet = 'NotYet',
+  Good = 'Good',
+  Bad = 'Bad',
 }
 
 @Component({
@@ -59,9 +65,9 @@ export class LegacyHelperComponent implements AfterViewInit {
 
   private left = 440;
 
-  private l1 = 0;
-  private l2 = 0;
-  private l3 = 0;
+  public lake1Result = LakeResult.NotYet;
+  public lake2Result = LakeResult.NotYet;
+  public lake3Result = LakeResult.NotYet;
 
   public round1Result = RoundResult.NotYet;
   public round2Result = RoundResult.NotYet;
@@ -129,93 +135,81 @@ export class LegacyHelperComponent implements AfterViewInit {
 
   public onRound1Click() {
     if (this.round1Result === RoundResult.NotYet) {
-      this.round1Result = RoundResult.Success
+      this.round1Result = RoundResult.Success;
     } else if (this.round1Result === RoundResult.Success) {
-      this.round1Result = RoundResult.Failure
-    } else  if (this.round1Result === RoundResult.Failure) {
+      this.round1Result = RoundResult.Failure;
+    } else if (this.round1Result === RoundResult.Failure) {
       this.round1Result = RoundResult.NotYet;
     }
   }
 
   public onRound2Click() {
     if (this.round2Result === RoundResult.NotYet) {
-      this.round2Result = RoundResult.Success
+      this.round2Result = RoundResult.Success;
     } else if (this.round2Result === RoundResult.Success) {
-      this.round2Result = RoundResult.Failure
-    } else  if (this.round2Result === RoundResult.Failure) {
+      this.round2Result = RoundResult.Failure;
+    } else if (this.round2Result === RoundResult.Failure) {
       this.round2Result = RoundResult.NotYet;
     }
   }
 
   public onRound3Click() {
     if (this.round3Result === RoundResult.NotYet) {
-      this.round3Result = RoundResult.Success
+      this.round3Result = RoundResult.Success;
     } else if (this.round3Result === RoundResult.Success) {
-      this.round3Result = RoundResult.Failure
-    } else  if (this.round3Result === RoundResult.Failure) {
+      this.round3Result = RoundResult.Failure;
+    } else if (this.round3Result === RoundResult.Failure) {
       this.round3Result = RoundResult.NotYet;
     }
   }
 
   public onRound4Click() {
     if (this.round4Result === RoundResult.NotYet) {
-      this.round4Result = RoundResult.Success
+      this.round4Result = RoundResult.Success;
     } else if (this.round4Result === RoundResult.Success) {
-      this.round4Result = RoundResult.Failure
-    } else  if (this.round4Result === RoundResult.Failure) {
+      this.round4Result = RoundResult.Failure;
+    } else if (this.round4Result === RoundResult.Failure) {
       this.round4Result = RoundResult.NotYet;
     }
   }
 
   public onRound5Click() {
     if (this.round5Result === RoundResult.NotYet) {
-      this.round5Result = RoundResult.Success
+      this.round5Result = RoundResult.Success;
     } else if (this.round5Result === RoundResult.Success) {
-      this.round5Result = RoundResult.Failure
-    } else  if (this.round5Result === RoundResult.Failure) {
+      this.round5Result = RoundResult.Failure;
+    } else if (this.round5Result === RoundResult.Failure) {
       this.round5Result = RoundResult.NotYet;
     }
   }
 
   public onFirstLakeClick() {
-    var div = document.getElementById('firstLake');
-    if (div === null) return;
-    if (this.l1 === 0) {
-      this.l1++;
-      div.style.backgroundPosition = 'center';
-      var secondLakeLady = document.getElementById('secondLakeLady');
-      if (secondLakeLady === null) return;
-      secondLakeLady.classList.remove('hiddenObj');
-    } else if (this.l1 === 1) {
-      div.style.backgroundPosition = 'right';
-      this.l1--;
+    if (this.lake1Result === LakeResult.NotYet) {
+      this.lake1Result = LakeResult.Bad;
+    } else if (this.lake1Result === LakeResult.Bad) {
+      this.lake1Result = LakeResult.Good;
+    } else if (this.lake1Result === LakeResult.Good) {
+      this.lake1Result = LakeResult.NotYet;
     }
   }
 
   public onSecondLakeClick() {
-    var div = document.getElementById('secondLake');
-    if (div === null) return;
-    if (this.l2 === 0) {
-      this.l2++;
-      div.style.backgroundPosition = 'center';
-      var thirdLakeLady = document.getElementById('thirdLakeLady');
-      if (thirdLakeLady === null) return;
-      thirdLakeLady.classList.remove('hiddenObj');
-    } else if (this.l2 === 1) {
-      div.style.backgroundPosition = 'right';
-      this.l2--;
+    if (this.lake2Result === LakeResult.NotYet) {
+      this.lake2Result = LakeResult.Bad;
+    } else if (this.lake2Result === LakeResult.Bad) {
+      this.lake2Result = LakeResult.Good;
+    } else if (this.lake2Result === LakeResult.Good) {
+      this.lake2Result = LakeResult.NotYet;
     }
   }
 
   public onThirdLakeClick() {
-    var div = document.getElementById('thirdLake');
-    if (div === null) return;
-    if (this.l3 === 0) {
-      this.l3++;
-      div.style.backgroundPosition = 'center';
-    } else if (this.l3 === 1) {
-      div.style.backgroundPosition = 'right';
-      this.l3--;
+    if (this.lake3Result === LakeResult.NotYet) {
+      this.lake3Result = LakeResult.Bad;
+    } else if (this.lake3Result === LakeResult.Bad) {
+      this.lake3Result = LakeResult.Good;
+    } else if (this.lake3Result === LakeResult.Good) {
+      this.lake3Result = LakeResult.NotYet;
     }
   }
 
@@ -223,9 +217,19 @@ export class LegacyHelperComponent implements AfterViewInit {
     if (roundResult === RoundResult.Success) {
       return 'left';
     } else if (roundResult === RoundResult.Failure) {
-      return 'right'
+      return 'right';
     } else {
-      return 'center'
+      return 'center';
+    }
+  }
+
+  public getLakeResult(lakeResult: LakeResult) {
+    if (lakeResult === LakeResult.Good) {
+      return 'right';
+    } else if (lakeResult === LakeResult.Bad) {
+      return 'center';
+    } else {
+      return 'left';
     }
   }
 

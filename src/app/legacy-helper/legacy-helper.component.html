@@ -6,7 +6,7 @@
     id="game1"
     (click)="onRound1Click()"
   >
-    {{ round1Max }} 
+    {{ round1Max }}
   </div>
   <div
     class="game"
@@ -92,29 +92,58 @@
   </div>
 
   <div class="lakeDiv">
-    <div class="lake hiddenObj" id="firstLakeLady">
+    <div
+      class="lake"
+      [ngClass]="{ hiddenObj: playerCount < 7 }"
+      id="firstLakeLady"
+    >
       <div class="dropdown">
         <select class="players">
           <option *ngFor="let i of playerCounts" [value]="i">{{ i }} 號</option>
         </select>
       </div>
-      <div class="gameLake" id="firstLake" (click)="onFirstLakeClick()"></div>
+      <div
+        class="gameLake"
+        [style.background-position]="getLakeResult(lake1Result)"
+        id="firstLake"
+        (click)="onFirstLakeClick()"
+      ></div>
     </div>
-    <div class="lake hiddenObj" id="secondLakeLady">
+    <div
+      class="lake"
+      [ngClass]="{ hiddenObj: lake1Result === 'NotYet' }"
+      id="secondLakeLady"
+    >
       <div class="dropdown">
         <select class="players">
           <option *ngFor="let i of playerCounts" [value]="i">{{ i }} 號</option>
         </select>
       </div>
-      <div class="gameLake" id="secondLake" (click)="onSecondLakeClick()"></div>
+      <div
+        class="gameLake"
+        [style.background-position]="getLakeResult(lake2Result)"
+        id="secondLake"
+        (click)="onSecondLakeClick()"
+      ></div>
     </div>
-    <div class="lake hiddenObj" id="thirdLakeLady">
+    <div
+      class="lake"
+      [ngClass]="{
+        hiddenObj: lake1Result === 'NotYet' || lake2Result === 'NotYet'
+      }"
+      id="thirdLakeLady"
+    >
       <div class="dropdown">
         <select class="players">
           <option *ngFor="let i of playerCounts" [value]="i">{{ i }} 號</option>
         </select>
       </div>
-      <div class="gameLake" id="thirdLake" (click)="onThirdLakeClick()"></div>
+      <div
+        class="gameLake"
+        [style.background-position]="getLakeResult(lake3Result)"
+        id="thirdLake"
+        (click)="onThirdLakeClick()"
+      ></div>
     </div>
   </div>
 </div>

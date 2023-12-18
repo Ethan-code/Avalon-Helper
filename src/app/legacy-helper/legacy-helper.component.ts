@@ -78,10 +78,6 @@ export class LegacyHelperComponent implements AfterViewInit {
     $('.right').css('width', 70 * this.vote.list.length - 10 + 'px');
 
     this.showlist();
-
-    $('.game').on('focus', () => {
-      $(this).blur();
-    });
   }
 
   public onFullscreenClick(): void {

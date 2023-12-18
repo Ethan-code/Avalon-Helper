@@ -1,39 +1,49 @@
 <div class="result">
-  <input
-    class="game1 game"
-    type="text"
-    value="2"
+  <div
+    class="game"
+    [ngClass]="{ hideBefore: a === 0 }"
+    [style.background-position]="a === 0 ? 'left' : 'right'"
     id="game1"
     (click)="onGame1Click()"
-  />
-  <input
-    class="game2 game"
-    type="text"
-    value="3"
+  >
+    {{ game1Max }}
+  </div>
+  <div
+    class="game"
+    [ngClass]="{ hideBefore: b === 0 }"
+    [style.background-position]="b === 0 ? 'left' : 'right'"
     id="game2"
     (click)="onGame2Click()"
-  />
-  <input
-    class="game3 game"
-    type="text"
-    value="2"
+  >
+    {{ game2Max }}
+  </div>
+  <div
+    class="game"
+    [ngClass]="{ hideBefore: c === 0 }"
+    [style.background-position]="c === 0 ? 'left' : 'right'"
     id="game3"
     (click)="onGame3Click()"
-  />
-  <input
-    class="game4 game"
-    type="text"
-    value="3"
+  >
+    {{ game3Max }}
+  </div>
+  <div
+    class="game"
+    [ngClass]="{ hideBefore: d === 0 }"
+    [style.background-position]="d === 0 ? 'left' : 'right'"
     id="game4"
     (click)="onGame4Click()"
-  />
-  <input
-    class="game5 game"
-    type="text"
-    value="3"
+  >
+    {{ game4Max }}
+  </div>
+  <div
+    class="game"
+    [ngClass]="{ hideBefore: e === 0 }"
+    [style.background-position]="e === 0 ? 'left' : 'right'"
     id="game5"
     (click)="onGame5Click()"
-  />
+  >
+    {{ game5Max }}
+  </div>
 </div>
 <div class="num_people">
   <button type="button" class="addbtn" (click)="onAddClick()">+</button>

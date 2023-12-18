@@ -1,48 +1,48 @@
 <div class="result">
   <div
     class="game"
-    [style.background-position]="getGameResult(game1Result)"
-    [style.color]="game1Result === 'Pending' ? 'navy' : 'white'"
+    [style.background-position]="getRoundResult(round1Result)"
+    [style.color]="round1Result === 'NotYet' ? 'navy' : 'white'"
     id="game1"
-    (click)="onGame1Click()"
+    (click)="onRound1Click()"
   >
-    {{ game1Max }} 
+    {{ round1Max }} 
   </div>
   <div
     class="game"
-    [style.background-position]="getGameResult(game2Result)"
-    [style.color]="game2Result === 'Pending' ? 'navy' : 'white'"
+    [style.background-position]="getRoundResult(round2Result)"
+    [style.color]="round2Result === 'NotYet' ? 'navy' : 'white'"
     id="game2"
-    (click)="onGame2Click()"
+    (click)="onRound2Click()"
   >
-    {{ game2Max }}
+    {{ round2Max }}
   </div>
   <div
     class="game"
-    [style.background-position]="getGameResult(game3Result)"
-    [style.color]="game3Result === 'Pending' ? 'navy' : 'white'"
+    [style.background-position]="getRoundResult(round3Result)"
+    [style.color]="round3Result === 'NotYet' ? 'navy' : 'white'"
     id="game3"
-    (click)="onGame3Click()"
+    (click)="onRound3Click()"
   >
-    {{ game3Max }}
+    {{ round3Max }}
   </div>
   <div
     class="game"
-    [style.background-position]="getGameResult(game4Result)"
-    [style.color]="game4Result === 'Pending' ? 'navy' : 'white'"
+    [style.background-position]="getRoundResult(round4Result)"
+    [style.color]="round4Result === 'NotYet' ? 'navy' : 'white'"
     id="game4"
-    (click)="onGame4Click()"
+    (click)="onRound4Click()"
   >
-    {{ game4Max }}
+    {{ round4Max }}
   </div>
   <div
     class="game"
-    [style.background-position]="getGameResult(game5Result)"
-    [style.color]="game5Result === 'Pending' ? 'navy' : 'white'"
+    [style.background-position]="getRoundResult(round5Result)"
+    [style.color]="round5Result === 'NotYet' ? 'navy' : 'white'"
     id="game5"
-    (click)="onGame5Click()"
+    (click)="onRound5Click()"
   >
-    {{ game5Max }}
+    {{ round5Max }}
   </div>
 </div>
 <div class="num_people">

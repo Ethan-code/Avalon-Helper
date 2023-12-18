@@ -21,10 +21,11 @@ declare var $: JQueryStatic;
 // 20230630
 // 1.新增壞車任務失敗張數
 
-enum GameResult {
+enum RoundResult {
+  NotYet = 'NotYet',
   Success = 'Success',
-  Fail = 'Fail',
-  Pending = 'Pending'
+  Failure = 'Failure',
+  NoPlay = 'NoPlay'
 }
 
 @Component({
@@ -50,11 +51,11 @@ export class LegacyHelperComponent implements AfterViewInit {
   private vote_html =
     "<div class='info'><label><input id='ticket' type='checkbox'/><div class='ticket'></div><label><input id='mission' type='checkbox'/><div class='mission'></div></label></label></div>";
 
-  public game1Max = 2;
-  public game2Max = 3;
-  public game3Max = 2;
-  public game4Max = 3;
-  public game5Max = 3;
+  public round1Max = 2;
+  public round2Max = 3;
+  public round3Max = 2;
+  public round4Max = 3;
+  public round5Max = 3;
 
   private left = 440;
 
@@ -62,18 +63,18 @@ export class LegacyHelperComponent implements AfterViewInit {
   private l2 = 0;
   private l3 = 0;
 
-  public game1Result = GameResult.Pending;
-  public game2Result = GameResult.Pending;
-  public game3Result = GameResult.Pending;
-  public game4Result = GameResult.Pending;
-  public game5Result = GameResult.Pending;
+  public round1Result = RoundResult.NotYet;
+  public round2Result = RoundResult.NotYet;
+  public round3Result = RoundResult.NotYet;
+  public round4Result = RoundResult.NotYet;
+  public round5Result = RoundResult.NotYet;
 
   public playerCount = 5;
   public get playerCounts(): number[] {
     return Array.from({ length: this.playerCount }, (_, index) => index + 1);
   }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     $('.right').css('width', 70 * this.vote.list.length - 10 + 'px');
 
     this.showlist();
@@ -130,53 +131,53 @@ export class LegacyHelperComponent implements AfterViewInit {
     }
   }
 
-  public onGame1Click() {
-    if (this.game1Result === GameResult.Pending) {
-      this.game1Result = GameResult.Success
-    } else if (this.game1Result === GameResult.Success) {
-      this.game1Result = GameResult.Fail
-    } else  if (this.game1Result === GameResult.Fail) {
-      this.game1Result = GameResult.Pending;
+  public onRound1Click() {
+    if (this.round1Result === RoundResult.NotYet) {
+      this.round1Result = RoundResult.Success
+    } else if (this.round1Result === RoundResult.Success) {
+      this.round1Result = RoundResult.Failure
+    } else  if (this.round1Result === RoundResult.Failure) {
+      this.round1Result = RoundResult.NotYet;
     }
   }
 
-  public onGame2Click() {
-    if (this.game2Result === GameResult.Pending) {
-      this.game2Result = GameResult.Success
-    } else if (this.game2Result === GameResult.Success) {
-      this.game2Result = GameResult.Fail
-    } else  if (this.game2Result === GameResult.Fail) {
-      this.game2Result = GameResult.Pending;
+  public onRound2Click() {
+    if (this.round2Result === RoundResult.NotYet) {
+      this.round2Result = RoundResult.Success
+    } else if (this.round2Result === RoundResult.Success) {
+      this.round2Result = RoundResult.Failure
+    } else  if (this.round2Result === RoundResult.Failure) {
+      this.round2Result = RoundResult.NotYet;
     }
   }
 
-  public onGame3Click() {
-    if (this.game3Result === GameResult.Pending) {
-      this.game3Result = GameResult.Success
-    } else if (this.game3Result === GameResult.Success) {
-      this.game3Result = GameResult.Fail
-    } else  if (this.game3Result === GameResult.Fail) {
-      this.game3Result = GameResult.Pending;
+  public onRound3Click() {
+    if (this.round3Result === RoundResult.NotYet) {
+      this.round3Result = RoundResult.Success
+    } else if (this.round3Result === RoundResult.Success) {
+      this.round3Result = RoundResult.Failure
+    } else  if (this.round3Result === RoundResult.Failure) {
+      this.round3Result = RoundResult.NotYet;
     }
   }
 
-  public onGame4Click() {
-    if (this.game4Result === GameResult.Pending) {
-      this.game4Result = GameResult.Success
-    } else if (this.game4Result === GameResult.Success) {
-      this.game4Result = GameResult.Fail
-    } else  if (this.game4Result === GameResult.Fail) {
-      this.game4Result = GameResult.Pending;
+  public onRound4Click() {
+    if (this.round4Result === RoundResult.NotYet) {
+      this.round4Result = RoundResult.Success
+    } else if (this.round4Result === RoundResult.Success) {
+      this.round4Result = RoundResult.Failure
+    } else  if (this.round4Result === RoundResult.Failure) {
+      this.round4Result = RoundResult.NotYet;
     }
   }
 
-  public onGame5Click() {
-    if (this.game5Result === GameResult.Pending) {
-      this.game5Result = GameResult.Success
-    } else if (this.game5Result === GameResult.Success) {
-      this.game5Result = GameResult.Fail
-    } else  if (this.game5Result === GameResult.Fail) {
-      this.game5Result = GameResult.Pending;
+  public onRound5Click() {
+    if (this.round5Result === RoundResult.NotYet) {
+      this.round5Result = RoundResult.Success
+    } else if (this.round5Result === RoundResult.Success) {
+      this.round5Result = RoundResult.Failure
+    } else  if (this.round5Result === RoundResult.Failure) {
+      this.round5Result = RoundResult.NotYet;
     }
   }
 
@@ -222,10 +223,10 @@ export class LegacyHelperComponent implements AfterViewInit {
     }
   }
 
-  public getGameResult(gameResult: GameResult) {
-    if (gameResult === GameResult.Success) {
+  public getRoundResult(roundResult: RoundResult) {
+    if (roundResult === RoundResult.Success) {
       return 'left';
-    } else if (gameResult === GameResult.Fail) {
+    } else if (roundResult === RoundResult.Failure) {
       return 'right'
     } else {
       return 'center'
@@ -264,29 +265,29 @@ export class LegacyHelperComponent implements AfterViewInit {
     }
 
     if (this.roles.list.length == 6) {
-      this.game1Max = 2;
-      this.game2Max = 3;
-      this.game3Max = 4;
-      this.game4Max = 3;
-      this.game5Max = 4;
+      this.round1Max = 2;
+      this.round2Max = 3;
+      this.round3Max = 4;
+      this.round4Max = 3;
+      this.round5Max = 4;
     } else if (this.roles.list.length == 7) {
-      this.game1Max = 2;
-      this.game2Max = 3;
-      this.game3Max = 3;
-      this.game4Max = 4;
-      this.game5Max = 4;
+      this.round1Max = 2;
+      this.round2Max = 3;
+      this.round3Max = 3;
+      this.round4Max = 4;
+      this.round5Max = 4;
     } else if (this.roles.list.length >= 8) {
-      this.game1Max = 3;
-      this.game2Max = 4;
-      this.game3Max = 4;
-      this.game4Max = 5;
-      this.game5Max = 5;
+      this.round1Max = 3;
+      this.round2Max = 4;
+      this.round3Max = 4;
+      this.round4Max = 5;
+      this.round5Max = 5;
     } else {
-      this.game1Max = 2;
-      this.game2Max = 3;
-      this.game3Max = 2;
-      this.game4Max = 3;
-      this.game5Max = 3;
+      this.round1Max = 2;
+      this.round2Max = 3;
+      this.round3Max = 2;
+      this.round4Max = 3;
+      this.round5Max = 3;
     }
   }
 }

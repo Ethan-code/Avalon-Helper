@@ -57,9 +57,9 @@
 
   <div class="lakeDiv">
     <div
+      *ngFor="let lakeResult of lakeResults; let i = index; trackBy: trackByFn"
       class="lake"
-      [ngClass]="{ hiddenObj: playerCount < 7 }"
-      id="firstLakeLady"
+      [ngClass]="{ hiddenObj: showlakeLogics[i] }"
     >
       <div class="dropdown">
         <select class="players">
@@ -68,45 +68,8 @@
       </div>
       <div
         class="gameLake"
-        [style.background-position]="getLakeResult(lake1Result)"
-        id="firstLake"
-        (click)="onFirstLakeClick()"
-      ></div>
-    </div>
-    <div
-      class="lake"
-      [ngClass]="{ hiddenObj: lake1Result === 'NotYet' }"
-      id="secondLakeLady"
-    >
-      <div class="dropdown">
-        <select class="players">
-          <option *ngFor="let i of playerCounts" [value]="i">{{ i }} 號</option>
-        </select>
-      </div>
-      <div
-        class="gameLake"
-        [style.background-position]="getLakeResult(lake2Result)"
-        id="secondLake"
-        (click)="onSecondLakeClick()"
-      ></div>
-    </div>
-    <div
-      class="lake"
-      [ngClass]="{
-        hiddenObj: lake1Result === 'NotYet' || lake2Result === 'NotYet'
-      }"
-      id="thirdLakeLady"
-    >
-      <div class="dropdown">
-        <select class="players">
-          <option *ngFor="let i of playerCounts" [value]="i">{{ i }} 號</option>
-        </select>
-      </div>
-      <div
-        class="gameLake"
-        [style.background-position]="getLakeResult(lake3Result)"
-        id="thirdLake"
-        (click)="onThirdLakeClick()"
+        [style.background-position]="getLakeResult(lakeResult)"
+        (click)="onLakeClick(lakeResult, i)"
       ></div>
     </div>
   </div>

@@ -61,9 +61,20 @@ export class LegacyHelperComponent implements AfterViewInit {
 
   private left = 440;
 
-  public lake1Result = LakeResult.NotYet;
-  public lake2Result = LakeResult.NotYet;
-  public lake3Result = LakeResult.NotYet;
+  public lakeResults = [
+    LakeResult.NotYet,
+    LakeResult.NotYet,
+    LakeResult.NotYet,
+  ];
+  public get showlakeLogics(): boolean[] {
+    return [
+      this.playerCount < 7,
+      this.playerCount < 7 || this.lakeResults[0] === 'NotYet',
+      this.playerCount < 7 ||
+        this.lakeResults[0] === 'NotYet' ||
+        this.lakeResults[1] === 'NotYet',
+    ];
+  }
 
   public roundResults = [
     RoundResult.NotYet,
@@ -105,11 +116,6 @@ export class LegacyHelperComponent implements AfterViewInit {
 
     this.showlist();
     $('.right').css('width', 70 * this.vote.list.length - 10 + 'px');
-    if (this.roles.list.length >= 7) {
-      var firstLakeLady = document.getElementById('firstLakeLady');
-      if (firstLakeLady === null) return;
-      firstLakeLady.classList.remove('hiddenObj');
-    }
   }
 
   public onDeleteClick() {
@@ -123,12 +129,6 @@ export class LegacyHelperComponent implements AfterViewInit {
     }
     this.showlist();
     $('.right').css('width', 70 * this.vote.list.length - 10 + 'px');
-    if (this.roles.list.length < 7) {
-      var elements = document.getElementsByClassName('lake');
-      for (var i = 0; i < elements.length; i++) {
-        elements[i].classList.add('hiddenObj');
-      }
-    }
   }
 
   public trackByFn(index: number, item: any) {
@@ -145,33 +145,13 @@ export class LegacyHelperComponent implements AfterViewInit {
     }
   }
 
-  public onFirstLakeClick() {
-    if (this.lake1Result === LakeResult.NotYet) {
-      this.lake1Result = LakeResult.Bad;
-    } else if (this.lake1Result === LakeResult.Bad) {
-      this.lake1Result = LakeResult.Good;
-    } else if (this.lake1Result === LakeResult.Good) {
-      this.lake1Result = LakeResult.NotYet;
-    }
-  }
-
-  public onSecondLakeClick() {
-    if (this.lake2Result === LakeResult.NotYet) {
-      this.lake2Result = LakeResult.Bad;
-    } else if (this.lake2Result === LakeResult.Bad) {
-      this.lake2Result = LakeResult.Good;
-    } else if (this.lake2Result === LakeResult.Good) {
-      this.lake2Result = LakeResult.NotYet;
-    }
-  }
-
-  public onThirdLakeClick() {
-    if (this.lake3Result === LakeResult.NotYet) {
-      this.lake3Result = LakeResult.Bad;
-    } else if (this.lake3Result === LakeResult.Bad) {
-      this.lake3Result = LakeResult.Good;
-    } else if (this.lake3Result === LakeResult.Good) {
-      this.lake3Result = LakeResult.NotYet;
+  public onLakeClick(lakeResult: LakeResult, index: number) {
+    if (lakeResult === LakeResult.NotYet) {
+      this.lakeResults[index] = LakeResult.Bad;
+    } else if (lakeResult === LakeResult.Bad) {
+      this.lakeResults[index] = LakeResult.Good;
+    } else if (lakeResult === LakeResult.Good) {
+      this.lakeResults[index] = LakeResult.NotYet;
     }
   }
 

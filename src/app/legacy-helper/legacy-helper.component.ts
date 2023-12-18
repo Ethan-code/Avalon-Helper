@@ -264,32 +264,24 @@ export class LegacyHelperComponent implements AfterViewInit {
     }
 
     if (this.roles.list.length == 6) {
-      $('.game').css('font-size', '50px');
-      $('.game').css('color', 'navy');
       this.game1Max = 2;
       this.game2Max = 3;
       this.game3Max = 4;
       this.game4Max = 3;
       this.game5Max = 4;
     } else if (this.roles.list.length == 7) {
-      $('.game').css('font-size', '50px');
-      $('.game').css('color', 'navy');
       this.game1Max = 2;
       this.game2Max = 3;
       this.game3Max = 3;
       this.game4Max = 4;
       this.game5Max = 4;
     } else if (this.roles.list.length >= 8) {
-      $('.game').css('font-size', '50px');
-      $('.game').css('color', 'navy');
       this.game1Max = 3;
       this.game2Max = 4;
       this.game3Max = 4;
       this.game4Max = 5;
       this.game5Max = 5;
     } else {
-      $('.game').css('font-size', '50px');
-      $('.game').css('color', 'navy');
       this.game1Max = 2;
       this.game2Max = 3;
       this.game3Max = 2;

@@ -1,17 +1,15 @@
 <div class="result">
   <div
     class="game"
-    [ngClass]="{ hideBefore: a === 0 }"
-    [style.background-position]="a === 0 ? 'left' : 'right'"
+    [style.background-position]="getGameResult(game1Result)"
     id="game1"
     (click)="onGame1Click()"
   >
-    {{ game1Max }}
+    {{ game1Max }} 
   </div>
   <div
     class="game"
-    [ngClass]="{ hideBefore: b === 0 }"
-    [style.background-position]="b === 0 ? 'left' : 'right'"
+    [style.background-position]="getGameResult(game2Result)"
     id="game2"
     (click)="onGame2Click()"
   >
@@ -19,8 +17,7 @@
   </div>
   <div
     class="game"
-    [ngClass]="{ hideBefore: c === 0 }"
-    [style.background-position]="c === 0 ? 'left' : 'right'"
+    [style.background-position]="getGameResult(game3Result)"
     id="game3"
     (click)="onGame3Click()"
   >
@@ -28,8 +25,7 @@
   </div>
   <div
     class="game"
-    [ngClass]="{ hideBefore: d === 0 }"
-    [style.background-position]="d === 0 ? 'left' : 'right'"
+    [style.background-position]="getGameResult(game4Result)"
     id="game4"
     (click)="onGame4Click()"
   >
@@ -37,8 +33,7 @@
   </div>
   <div
     class="game"
-    [ngClass]="{ hideBefore: e === 0 }"
-    [style.background-position]="e === 0 ? 'left' : 'right'"
+    [style.background-position]="getGameResult(game5Result)"
     id="game5"
     (click)="onGame5Click()"
   >

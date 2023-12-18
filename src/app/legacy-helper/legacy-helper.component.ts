@@ -21,6 +21,12 @@ declare var $: JQueryStatic;
 // 20230630
 // 1.新增壞車任務失敗張數
 
+enum GameResult {
+  Success = 'Success',
+  Fail = 'Fail',
+  Pending = 'Pending'
+}
+
 @Component({
   selector: 'app-legacy-helper',
   standalone: true,
@@ -56,11 +62,11 @@ export class LegacyHelperComponent implements AfterViewInit {
   private l2 = 0;
   private l3 = 0;
 
-  public a = 0;
-  public b = 0;
-  public c = 0;
-  public d = 0;
-  public e = 0;
+  public game1Result = GameResult.Pending;
+  public game2Result = GameResult.Pending;
+  public game3Result = GameResult.Pending;
+  public game4Result = GameResult.Pending;
+  public game5Result = GameResult.Pending;
 
   public playerCount = 5;
   public get playerCounts(): number[] {
@@ -125,147 +131,52 @@ export class LegacyHelperComponent implements AfterViewInit {
   }
 
   public onGame1Click() {
-    if (this.a === 0) {
-      this.a++;
-      $('#game1').attr('value', '');
-    } else if (this.a === 1) {
-      this.a++;
-    } else if (this.a === 2) {
-      if (this.a === this.game1Max) {
-        this.a = 0;
-      } else {
-        this.a++;
-      }
-    } else if (this.a === 3) {
-      if (this.a === this.game1Max) {
-        this.a = 0;
-      } else {
-        this.a++;
-      }
-    } else if (this.a === 4) {
-      if (this.a === this.game1Max) {
-        this.a = 0;
-      } else {
-        this.a++;
-      }
-    } else {
-      this.a = 0;
+    if (this.game1Result === GameResult.Pending) {
+      this.game1Result = GameResult.Success
+    } else if (this.game1Result === GameResult.Success) {
+      this.game1Result = GameResult.Fail
+    } else  if (this.game1Result === GameResult.Fail) {
+      this.game1Result = GameResult.Pending;
     }
   }
 
   public onGame2Click() {
-    if (this.b === 0) {
-      this.b++;
-      $('#game2').attr('value', '');
-    } else if (this.b === 1) {
-      this.b++;
-    } else if (this.b === 2) {
-      if (this.b === this.game2Max) {
-        this.b = 0;
-      } else {
-        this.b++;
-      }
-    } else if (this.b === 3) {
-      if (this.b === this.game2Max) {
-        this.b = 0;
-      } else {
-        this.b++;
-      }
-    } else if (this.b === 4) {
-      if (this.b === this.game2Max) {
-        this.b = 0;
-      } else {
-        this.b++;
-      }
-    } else {
-      this.b = 0;
+    if (this.game2Result === GameResult.Pending) {
+      this.game2Result = GameResult.Success
+    } else if (this.game2Result === GameResult.Success) {
+      this.game2Result = GameResult.Fail
+    } else  if (this.game2Result === GameResult.Fail) {
+      this.game2Result = GameResult.Pending;
     }
   }
 
   public onGame3Click() {
-    if (this.c === 0) {
-      this.c++;
-      $('#game3').attr('value', '');
-    } else if (this.c === 1) {
-      this.c++;
-    } else if (this.c === 2) {
-      if (this.c === this.game3Max) {
-        this.c = 0;
-      } else {
-        this.c++;
-      }
-    } else if (this.c === 3) {
-      if (this.c === this.game3Max) {
-        this.c = 0;
-      } else {
-        this.c++;
-      }
-    } else if (this.c === 4) {
-      if (this.c === this.game3Max) {
-        this.c = 0;
-      } else {
-        this.c++;
-      }
-    } else {
-      this.c = 0;
+    if (this.game3Result === GameResult.Pending) {
+      this.game3Result = GameResult.Success
+    } else if (this.game3Result === GameResult.Success) {
+      this.game3Result = GameResult.Fail
+    } else  if (this.game3Result === GameResult.Fail) {
+      this.game3Result = GameResult.Pending;
     }
   }
 
   public onGame4Click() {
-    if (this.d === 0) {
-      this.d++;
-      $('#game4').attr('value', '');
-    } else if (this.d === 1) {
-      this.d++;
-    } else if (this.d === 2) {
-      if (this.d === this.game4Max) {
-        this.d = 0;
-      } else {
-        this.d++;
-      }
-    } else if (this.d === 3) {
-      if (this.d === this.game4Max) {
-        this.d = 0;
-      } else {
-        this.d++;
-      }
-    } else if (this.d === 4) {
-      if (this.d === this.game4Max) {
-        this.d = 0;
-      } else {
-        this.d++;
-      }
-    } else {
-      this.d = 0;
+    if (this.game4Result === GameResult.Pending) {
+      this.game4Result = GameResult.Success
+    } else if (this.game4Result === GameResult.Success) {
+      this.game4Result = GameResult.Fail
+    } else  if (this.game4Result === GameResult.Fail) {
+      this.game4Result = GameResult.Pending;
     }
   }
 
   public onGame5Click() {
-    if (this.e === 0) {
-      this.e++;
-      $('#game5').attr('value', '');
-    } else if (this.e === 1) {
-      this.e++;
-    } else if (this.e === 2) {
-      if (this.e === this.game5Max) {
-        this.e = 0;
-      } else {
-        this.e++;
-      }
-    } else if (this.e === 3) {
-      if (this.e === this.game5Max) {
-        this.e = 0;
-      } else {
-        this.e++;
-      }
-    } else if (this.e === 4) {
-      if (this.e === this.game5Max) {
-        this.e = 0;
-      } else {
-        this.e++;
-      }
-    } else {
-      this.e = 0;
+    if (this.game5Result === GameResult.Pending) {
+      this.game5Result = GameResult.Success
+    } else if (this.game5Result === GameResult.Success) {
+      this.game5Result = GameResult.Fail
+    } else  if (this.game5Result === GameResult.Fail) {
+      this.game5Result = GameResult.Pending;
     }
   }
 
@@ -308,6 +219,16 @@ export class LegacyHelperComponent implements AfterViewInit {
     } else if (this.l3 === 1) {
       div.style.backgroundPosition = 'right';
       this.l3--;
+    }
+  }
+
+  public getGameResult(gameResult: GameResult) {
+    if (gameResult === GameResult.Success) {
+      return 'left';
+    } else if (gameResult === GameResult.Fail) {
+      return 'right'
+    } else {
+      return 'center'
     }
   }
 

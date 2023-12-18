@@ -1,48 +1,12 @@
 <div class="result">
   <div
+    *ngFor="let roundResult of roundResults; let i = index; trackBy: trackByFn"
     class="game"
-    [style.background-position]="getRoundResult(round1Result)"
-    [style.color]="round1Result === 'NotYet' ? 'navy' : 'white'"
-    id="game1"
-    (click)="onRound1Click()"
+    [style.background-position]="getRoundResult(roundResult)"
+    [style.color]="getRoundTextColor(roundResult)"
+    (click)="onRoundClick(roundResult, i)"
   >
-    {{ round1Max }}
-  </div>
-  <div
-    class="game"
-    [style.background-position]="getRoundResult(round2Result)"
-    [style.color]="round2Result === 'NotYet' ? 'navy' : 'white'"
-    id="game2"
-    (click)="onRound2Click()"
-  >
-    {{ round2Max }}
-  </div>
-  <div
-    class="game"
-    [style.background-position]="getRoundResult(round3Result)"
-    [style.color]="round3Result === 'NotYet' ? 'navy' : 'white'"
-    id="game3"
-    (click)="onRound3Click()"
-  >
-    {{ round3Max }}
-  </div>
-  <div
-    class="game"
-    [style.background-position]="getRoundResult(round4Result)"
-    [style.color]="round4Result === 'NotYet' ? 'navy' : 'white'"
-    id="game4"
-    (click)="onRound4Click()"
-  >
-    {{ round4Max }}
-  </div>
-  <div
-    class="game"
-    [style.background-position]="getRoundResult(round5Result)"
-    [style.color]="round5Result === 'NotYet' ? 'navy' : 'white'"
-    id="game5"
-    (click)="onRound5Click()"
-  >
-    {{ round5Max }}
+    {{ roundMaxs[i] }}
   </div>
 </div>
 <div class="num_people">

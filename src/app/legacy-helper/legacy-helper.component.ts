@@ -57,11 +57,7 @@ export class LegacyHelperComponent implements AfterViewInit {
   private vote_html =
     "<div class='info'><label><input id='ticket' type='checkbox'/><div class='ticket'></div><label><input id='mission' type='checkbox'/><div class='mission'></div></label></label></div>";
 
-  public round1Max = 2;
-  public round2Max = 3;
-  public round3Max = 2;
-  public round4Max = 3;
-  public round5Max = 3;
+  public roundMaxs = [2, 3, 2, 3, 3];
 
   private left = 440;
 
@@ -69,11 +65,13 @@ export class LegacyHelperComponent implements AfterViewInit {
   public lake2Result = LakeResult.NotYet;
   public lake3Result = LakeResult.NotYet;
 
-  public round1Result = RoundResult.NotYet;
-  public round2Result = RoundResult.NotYet;
-  public round3Result = RoundResult.NotYet;
-  public round4Result = RoundResult.NotYet;
-  public round5Result = RoundResult.NotYet;
+  public roundResults = [
+    RoundResult.NotYet,
+    RoundResult.NotYet,
+    RoundResult.NotYet,
+    RoundResult.NotYet,
+    RoundResult.NotYet,
+  ];
 
   public playerCount = 5;
   public get playerCounts(): number[] {
@@ -133,53 +131,17 @@ export class LegacyHelperComponent implements AfterViewInit {
     }
   }
 
-  public onRound1Click() {
-    if (this.round1Result === RoundResult.NotYet) {
-      this.round1Result = RoundResult.Success;
-    } else if (this.round1Result === RoundResult.Success) {
-      this.round1Result = RoundResult.Failure;
-    } else if (this.round1Result === RoundResult.Failure) {
-      this.round1Result = RoundResult.NotYet;
-    }
+  public trackByFn(index: number, item: any) {
+    return index;
   }
 
-  public onRound2Click() {
-    if (this.round2Result === RoundResult.NotYet) {
-      this.round2Result = RoundResult.Success;
-    } else if (this.round2Result === RoundResult.Success) {
-      this.round2Result = RoundResult.Failure;
-    } else if (this.round2Result === RoundResult.Failure) {
-      this.round2Result = RoundResult.NotYet;
-    }
-  }
-
-  public onRound3Click() {
-    if (this.round3Result === RoundResult.NotYet) {
-      this.round3Result = RoundResult.Success;
-    } else if (this.round3Result === RoundResult.Success) {
-      this.round3Result = RoundResult.Failure;
-    } else if (this.round3Result === RoundResult.Failure) {
-      this.round3Result = RoundResult.NotYet;
-    }
-  }
-
-  public onRound4Click() {
-    if (this.round4Result === RoundResult.NotYet) {
-      this.round4Result = RoundResult.Success;
-    } else if (this.round4Result === RoundResult.Success) {
-      this.round4Result = RoundResult.Failure;
-    } else if (this.round4Result === RoundResult.Failure) {
-      this.round4Result = RoundResult.NotYet;
-    }
-  }
-
-  public onRound5Click() {
-    if (this.round5Result === RoundResult.NotYet) {
-      this.round5Result = RoundResult.Success;
-    } else if (this.round5Result === RoundResult.Success) {
-      this.round5Result = RoundResult.Failure;
-    } else if (this.round5Result === RoundResult.Failure) {
-      this.round5Result = RoundResult.NotYet;
+  public onRoundClick(roundResult: RoundResult, index: number) {
+    if (roundResult === RoundResult.NotYet) {
+      this.roundResults[index] = RoundResult.Success;
+    } else if (roundResult === RoundResult.Success) {
+      this.roundResults[index] = RoundResult.Failure;
+    } else if (roundResult === RoundResult.Failure) {
+      this.roundResults[index] = RoundResult.NotYet;
     }
   }
 
@@ -221,6 +183,10 @@ export class LegacyHelperComponent implements AfterViewInit {
     } else {
       return 'center';
     }
+  }
+
+  public getRoundTextColor(roundResult: RoundResult) {
+    return roundResult === 'NotYet' ? 'navy' : 'white';
   }
 
   public getLakeResult(lakeResult: LakeResult) {
@@ -265,29 +231,13 @@ export class LegacyHelperComponent implements AfterViewInit {
     }
 
     if (this.roles.list.length == 6) {
-      this.round1Max = 2;
-      this.round2Max = 3;
-      this.round3Max = 4;
-      this.round4Max = 3;
-      this.round5Max = 4;
+      this.roundMaxs = [2, 3, 4, 3, 4];
     } else if (this.roles.list.length == 7) {
-      this.round1Max = 2;
-      this.round2Max = 3;
-      this.round3Max = 3;
-      this.round4Max = 4;
-      this.round5Max = 4;
+      this.roundMaxs = [2, 3, 3, 4, 4];
     } else if (this.roles.list.length >= 8) {
-      this.round1Max = 3;
-      this.round2Max = 4;
-      this.round3Max = 4;
-      this.round4Max = 5;
-      this.round5Max = 5;
+      this.roundMaxs = [3, 4, 4, 5, 5];
     } else {
-      this.round1Max = 2;
-      this.round2Max = 3;
-      this.round3Max = 2;
-      this.round4Max = 3;
-      this.round5Max = 3;
+      this.roundMaxs = [2, 3, 2, 3, 3];
     }
   }
 }

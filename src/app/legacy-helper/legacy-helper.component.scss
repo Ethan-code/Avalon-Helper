@@ -36,14 +36,30 @@
   background-color: #0050be;
 }
 
+.player {
+  width: 60px;
+  height: 60px;
+  border-radius: 0;
+  font-size: 20px;
+  line-height: 20px;
+  text-align: left;
+  padding-top: 4px;
+  padding-left: 2px;
+  padding-right: 2px;
+  margin: 3px;
+  background-color: #d7e6ff;
+  margin: 1px;
+  margin-bottom: 5px;
+}
+
 .info {
-  display: inline-block;
   width: 60px;
   height: 60px;
   border-radius: 0;
   line-height: 50px;
   text-align: center;
-  margin: 3px;
+  margin: 1px;
+  margin-bottom: 5px;
 }
 .info .mission,
 .info .ticket {
@@ -55,7 +71,6 @@
   width: 56px;
   height: 56px;
   border-radius: 28px;
-  margin-top: 1px;
   background-color: #001e5f;
   position: absolute;
   left: 50%;

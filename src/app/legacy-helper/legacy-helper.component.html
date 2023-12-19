@@ -1,6 +1,5 @@
-<div class="flex">
-  <!-- left -->
-  <div class="mt-4">
+<div class="flex pt-4">
+  <div>
     <div class="inline-flex ml-3">
       <button
         type="button"
@@ -43,68 +42,56 @@
     </div>
   </div>
 
-  <!-- right -->
-  <div class="mt-4">
+  <div>
     <div class="empty-vote-round"></div>
-    <div *ngFor="let voteCount of voteCounts; let i = index" class="vote-round">
+    <div *ngFor="let voteCount of voteCounts; let i = index; trackBy: trackByFn" class="vote-round">
       <label
         >{{ (i % playerCount) + 1 }}號派票 <input type="checkbox" />
       </label>
     </div>
   </div>
 
-  <div class="form">
-    <div class="right" [style.width.px]="70 * playerCount - 10">
-      <div class="rightTop">
-        <li *ngFor="let playerCount of playerCounts">
-          {{ playerCount }}號 <input type="text" size="7" placeholder="name" />
-        </li>
-      </div>
-      <div class="rightDown">
-        <ng-container *ngFor="let voteCount of voteCounts; trackBy: trackByFn">
-          <div
-            *ngFor="let playerCount of playerCounts; trackBy: trackByFn"
-            class="info"
-          >
-            <label>
-              <input id="ticket" type="checkbox" />
-              <div class="ticket"></div>
-            </label>
-            <label>
-              <input id="mission" type="checkbox" />
-              <div class="mission"></div>
-            </label>
-          </div>
-        </ng-container>
-      </div>
+  <div *ngFor="let playerCount of playerCounts; trackBy: trackByFn">
+    <div class="player">
+      {{ playerCount }}號 <input type="text" size="7" placeholder="name" />
     </div>
+    <div *ngFor="let voteCount of voteCounts; trackBy: trackByFn" class="info">
+      <label>
+        <input id="ticket" type="checkbox" />
+        <div class="ticket"></div>
+      </label>
+      <label>
+        <input id="mission" type="checkbox" />
+        <div class="mission"></div>
+      </label>
+    </div>
+  </div>
 
-    <div class="lakeDiv" [style.left.px]="440 + 70 * (playerCount - 5)">
-      <div
-        *ngFor="
-          let lakeResult of lakeResults;
-          let i = index;
-          trackBy: trackByFn
-        "
-        class="lake"
-        [ngClass]="{ hiddenObj: showlakeLogics[i] }"
-      >
-        <div class="dropdown">
-          <select class="players">
-            <option
-              *ngFor="let playerCount of playerCounts"
-              [value]="playerCount"
-            >
-              {{ playerCount }} 號
-            </option>
-          </select>
-        </div>
-        <div
-          class="gameLake"
-          [style.background-position]="getLakeResult(lakeResult)"
-          (click)="onLakeClick(lakeResult, i)"
-        ></div>
+  <div class="lakeDiv" [style.left.px]="440 + 70 * (playerCount - 5)">
+    <div
+      *ngFor="
+        let lakeResult of lakeResults;
+        let i = index;
+        trackBy: trackByFn
+      "
+      class="lake"
+      [ngClass]="{ hiddenObj: showlakeLogics[i] }"
+    >
+      <div class="dropdown">
+        <select class="players">
+          <option
+            *ngFor="let playerCount of playerCounts"
+            [value]="playerCount"
+          >
+            {{ playerCount }} 號
+          </option>
+        </select>
       </div>
+      <div
+        class="gameLake"
+        [style.background-position]="getLakeResult(lakeResult)"
+        (click)="onLakeClick(lakeResult, i)"
+      ></div>
     </div>
   </div>
 </div>

@@ -50,13 +50,6 @@ export class LegacyHelperComponent implements AfterViewInit {
     list: ['', '', '', '', ''],
   };
 
-  private roles_html =
-    "<li>{{num}}號 <input type='text' size='7'  placeholder='name'  /></li>";
-  private captain_html =
-    "<div class='info'><li><label>{{num}}號派票  <input id='captain' type='checkbox'/> </label></li></div>";
-  private vote_html =
-    "<div class='info'><label><input id='ticket' type='checkbox'/><div class='ticket'></div><label><input id='mission' type='checkbox'/><div class='mission'></div></label></label></div>";
-
   public roundMaxs = [2, 3, 2, 3, 3];
 
   private left = 440;
@@ -87,6 +80,10 @@ export class LegacyHelperComponent implements AfterViewInit {
   public playerCount = 5;
   public get playerCounts(): number[] {
     return Array.from({ length: this.playerCount }, (_, index) => index + 1);
+  }
+  public voteCount = 25;
+  public get voteCounts(): number[] {
+    return Array.from({ length: this.voteCount }, (_, index) => index + 1);
   }
 
   public ngAfterViewInit(): void {
@@ -179,37 +176,8 @@ export class LegacyHelperComponent implements AfterViewInit {
     }
   }
 
+  //刪除並重新產生清單中所有項目
   private showlist() {
-    //刪除並重新產生清單中所有項目
-
-    $('.rightTop').html('');
-    $('.leftDown').html('');
-    $('.rightDown').html('');
-
-    //把每個項目做出來
-    for (var i = 0; i < this.roles.list.length; i++) {
-      //取代模板位置成資料replace(要取代的,取代成...)
-      var new_role_html = this.roles_html.replace(
-        '{{num}}',
-        (i + 1).toString()
-      );
-      $('.rightTop').append(new_role_html);
-    }
-
-    for (var i = 0; i < 25; i++) {
-      var new_caption_html = this.captain_html.replace(
-        '{{num}}',
-        ((i % this.roles.list.length) + 1).toString()
-      );
-      $('.leftDown').append(new_caption_html);
-    }
-
-    for (var i = 1; i <= this.vote.list.length; i++) {
-      for (var j = 1; j <= 25; j++) {
-        $('.rightDown').append(this.vote_html);
-      }
-    }
-
     if (this.roles.list.length == 6) {
       this.roundMaxs = [2, 3, 4, 3, 4];
     } else if (this.roles.list.length == 7) {

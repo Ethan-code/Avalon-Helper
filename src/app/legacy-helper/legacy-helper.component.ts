@@ -1,7 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import 'jquery';
-declare var $: JQueryStatic;
 
 // 新增功能:
 

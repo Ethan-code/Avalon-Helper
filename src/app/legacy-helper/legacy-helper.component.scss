@@ -21,7 +21,7 @@
   width: 100px;
   height: 60px;
   margin: 1px;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 .vote-round {
   width: 100px;
@@ -31,12 +31,15 @@
   text-align: center;
   border: 1px dashed #000;
   margin: 1px;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   color: white;
   background-color: #0050be;
 }
 
 .player {
+  position: sticky;
+  top: 0;
+  z-index: 100;
   width: 60px;
   height: 60px;
   border-radius: 0;
@@ -49,7 +52,7 @@
   margin: 3px;
   background-color: #d7e6ff;
   margin: 1px;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 
 .info {
@@ -59,7 +62,7 @@
   line-height: 50px;
   text-align: center;
   margin: 1px;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 .info .mission,
 .info .ticket {

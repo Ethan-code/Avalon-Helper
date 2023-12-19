@@ -45,15 +45,14 @@
   <div>
     <div class="empty-vote-round"></div>
     <div *ngFor="let voteCount of voteCounts; let i = index; trackBy: trackByFn" class="vote-round">
-      <label
-        >{{ (i % playerCount) + 1 }}號派票 <input type="checkbox" />
-      </label>
+      <label>{{ (i % playerCount) + 1 }}號派票 <input type="checkbox" /> </label>
     </div>
   </div>
 
-  <div *ngFor="let playerCount of playerCounts; trackBy: trackByFn">
+  <div *ngFor="let playerCount of playerCounts; trackBy: trackByFn" class="pl-2">
     <div class="player">
-      {{ playerCount }}號 <input type="text" size="7" placeholder="name" />
+      {{ playerCount }}號
+      <input type="text" size="7" placeholder="name" class="text-sm" />
     </div>
     <div *ngFor="let voteCount of voteCounts; trackBy: trackByFn" class="info">
       <label>
@@ -69,20 +68,13 @@
 
   <div class="lakeDiv" [style.left.px]="440 + 70 * (playerCount - 5)">
     <div
-      *ngFor="
-        let lakeResult of lakeResults;
-        let i = index;
-        trackBy: trackByFn
-      "
+      *ngFor="let lakeResult of lakeResults; let i = index; trackBy: trackByFn"
       class="lake"
       [ngClass]="{ hiddenObj: showlakeLogics[i] }"
     >
       <div class="dropdown">
         <select class="players">
-          <option
-            *ngFor="let playerCount of playerCounts"
-            [value]="playerCount"
-          >
+          <option *ngFor="let playerCount of playerCounts" [value]="playerCount">
             {{ playerCount }} 號
           </option>
         </select>

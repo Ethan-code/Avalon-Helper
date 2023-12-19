@@ -29,7 +29,7 @@
       </div>
     </div>
   </div>
-  <div class="right">
+  <div class="right" [style.width.px]="70 * playerCount - 10">
     <div class="rightTop">
       <li *ngFor="let playerCount of playerCounts">
         {{ playerCount }}號 <input type="text" size="7" placeholder="name" />

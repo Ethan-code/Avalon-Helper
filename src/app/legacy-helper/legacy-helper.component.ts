@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import 'jquery';
 declare var $: JQueryStatic;
 
@@ -41,7 +41,7 @@ enum LakeResult {
   templateUrl: './legacy-helper.component.html',
   styleUrl: './legacy-helper.component.scss',
 })
-export class LegacyHelperComponent implements AfterViewInit {
+export class LegacyHelperComponent {
   private isFullscreen: boolean = false;
   private vote: any = {
     list: ['', '', '', '', ''],
@@ -83,12 +83,6 @@ export class LegacyHelperComponent implements AfterViewInit {
     return Array.from({ length: this.voteCount }, (_, index) => index + 1);
   }
 
-  public ngAfterViewInit(): void {
-    $('.right').css('width', 70 * this.vote.list.length - 10 + 'px');
-
-    this.updateRoundMaxs();
-  }
-
   public onFullscreenClick(): void {
     if (!this.isFullscreen) {
       document.documentElement.requestFullscreen();
@@ -106,9 +100,7 @@ export class LegacyHelperComponent implements AfterViewInit {
       lakeDiv.css('left', this.left + 'px');
       this.playerCount++;
     }
-
     this.updateRoundMaxs();
-    $('.right').css('width', 70 * this.vote.list.length - 10 + 'px');
   }
 
   public onDeleteClick() {
@@ -120,7 +112,6 @@ export class LegacyHelperComponent implements AfterViewInit {
       this.playerCount--;
     }
     this.updateRoundMaxs();
-    $('.right').css('width', 70 * this.vote.list.length - 10 + 'px');
   }
 
   public trackByFn(index: number, item: any) {

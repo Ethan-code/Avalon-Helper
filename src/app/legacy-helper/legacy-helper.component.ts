@@ -1,24 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 
-// 新增功能:
-
-// 20230626
-// 1.新增湖女流panel
-// 2.全螢幕
-// 3.UX小調整
-
-// 20230628
-// 1.湖女更改成放在右邊
-// 2.發車結果更新成圖案
-
-// 20230629
-// 1.湖女圖片調小
-// 2.修正湖女會與排票紀錄重疊的bug
-
-// 20230630
-// 1.新增壞車任務失敗張數
-
 enum RoundResult {
   NotYet = 'NotYet',
   Success = 'Success',

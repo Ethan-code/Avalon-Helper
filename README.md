@@ -2,26 +2,25 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.7.
 
-## Development server
+## Change Log
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+`20231217` - `20231219`
+1. 移植到 Angular
 
-## Code scaffolding
+## Change Log Before Migrate
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+`20230626`
+1. 新增湖女流panel
+2. 全螢幕
+3. UX小調整
 
-## Build
+`20230628`
+1. 湖女更改成放在右邊
+2. 發車結果更新成圖案
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+`20230629`
+1. 湖女圖片調小
+2. 修正湖女會與排票紀錄重疊的bug
 
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+`20230630`
+1. 新增壞車任務失敗張數

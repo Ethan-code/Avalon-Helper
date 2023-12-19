@@ -16,3 +16,56 @@
   background-size: cover;
   user-select: none;
 }
+
+.info {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  border-radius: 0;
+  line-height: 50px;
+  text-align: center;
+  margin: 3px;
+}
+.info .mission,
+.info .ticket {
+  position: absolute;
+  transition: 0.5s;
+  cursor: pointer;
+}
+.info .ticket {
+  width: 56px;
+  height: 56px;
+  border-radius: 28px;
+  margin-top: 1px;
+  background-color: #001e5f;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%);
+}
+.info .mission {
+  position: absolute;
+  bottom: -62px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 18px 0 0 20px;
+  border-color: transparent transparent transparent black;
+}
+.info #mission,
+.info #ticket {
+  display: none;
+}
+.info #mission:checked + .mission {
+  border: none;
+  width: 26px;
+  height: 30px;
+  border-radius: 0;
+  background-image: url("/assets/assignment.jpeg");
+  background-size: contain;
+  background-position: center center;
+}
+.info #ticket:checked + .ticket {
+  background-color: #fff;
+  transition: 0.5s;
+}

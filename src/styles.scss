@@ -144,58 +144,6 @@ body {
   border-radius: 0;
   margin-top: 68px;
 }
-.form .right .rightDown .info {
-  display: inline-block;
-  width: 60px;
-  height: 60px;
-  border-radius: 0;
-  line-height: 50px;
-  text-align: center;
-  margin: 3px;
-}
-.form .right .rightDown .info .mission,
-.form .right .rightDown .info .ticket {
-  position: absolute;
-  transition: 0.5s;
-  cursor: pointer;
-}
-.form .right .rightDown .info .ticket {
-  width: 56px;
-  height: 56px;
-  border-radius: 28px;
-  margin-top: 1px;
-  background-color: #001e5f;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translateX(-50%);
-}
-.form .right .rightDown .info .mission {
-  position: absolute;
-  bottom: -62px;
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 18px 0 0 20px;
-  border-color: transparent transparent transparent black;
-}
-.form .right .rightDown .info #mission,
-.form .right .rightDown .info #ticket {
-  display: none;
-}
-.form .right .rightDown .info #mission:checked + .mission {
-  border: none;
-  width: 26px;
-  height: 30px;
-  border-radius: 0;
-  background-image: url("https://drive.google.com/uc?export=view&id=1uw0TUpNMbgrOPM3MJsydsEc2zuHLHSy_");
-  background-size: contain;
-  background-position: center center;
-}
-.form .right .rightDown .info #ticket:checked + .ticket {
-  background-color: #fff;
-  transition: 0.5s;
-}
 
 #firstLake:before {
   content: "";

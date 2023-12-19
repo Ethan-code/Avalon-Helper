@@ -43,9 +43,6 @@ enum LakeResult {
 })
 export class LegacyHelperComponent implements AfterViewInit {
   private isFullscreen: boolean = false;
-  private roles: any = {
-    list: ['', '', '', '', ''],
-  };
   private vote: any = {
     list: ['', '', '', '', ''],
   };
@@ -89,7 +86,7 @@ export class LegacyHelperComponent implements AfterViewInit {
   public ngAfterViewInit(): void {
     $('.right').css('width', 70 * this.vote.list.length - 10 + 'px');
 
-    this.showlist();
+    this.updateRoundMaxs();
   }
 
   public onFullscreenClick(): void {
@@ -102,8 +99,7 @@ export class LegacyHelperComponent implements AfterViewInit {
   }
 
   public onAddClick() {
-    if (this.roles.list.length < 10) {
-      this.roles.list.push('');
+    if (this.playerCount < 10) {
       this.vote.list.push('');
       this.left += 70;
       var lakeDiv = $('.lakeDiv');
@@ -111,20 +107,19 @@ export class LegacyHelperComponent implements AfterViewInit {
       this.playerCount++;
     }
 
-    this.showlist();
+    this.updateRoundMaxs();
     $('.right').css('width', 70 * this.vote.list.length - 10 + 'px');
   }
 
   public onDeleteClick() {
-    if (this.roles.list.length > 5) {
-      this.roles.list.pop('');
+    if (this.playerCount > 5) {
       this.vote.list.pop('');
       this.left -= 70;
       var lakeDiv = $('.lakeDiv');
       lakeDiv.css('left', this.left + 'px');
       this.playerCount--;
     }
-    this.showlist();
+    this.updateRoundMaxs();
     $('.right').css('width', 70 * this.vote.list.length - 10 + 'px');
   }
 
@@ -176,13 +171,12 @@ export class LegacyHelperComponent implements AfterViewInit {
     }
   }
 
-  //刪除並重新產生清單中所有項目
-  private showlist() {
-    if (this.roles.list.length == 6) {
+  private updateRoundMaxs() {
+    if (this.playerCount == 6) {
       this.roundMaxs = [2, 3, 4, 3, 4];
-    } else if (this.roles.list.length == 7) {
+    } else if (this.playerCount == 7) {
       this.roundMaxs = [2, 3, 3, 4, 4];
-    } else if (this.roles.list.length >= 8) {
+    } else if (this.playerCount >= 8) {
       this.roundMaxs = [3, 4, 4, 5, 5];
     } else {
       this.roundMaxs = [2, 3, 2, 3, 3];

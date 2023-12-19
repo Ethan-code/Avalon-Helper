@@ -36,9 +36,7 @@
       </li>
     </div>
     <div class="rightDown">
-      <ng-container
-        *ngFor="let voteCount of voteCounts; trackBy: trackByFn"
-      >
+      <ng-container *ngFor="let voteCount of voteCounts; trackBy: trackByFn">
         <div
           *ngFor="let playerCount of playerCounts; trackBy: trackByFn"
           class="info"
@@ -56,7 +54,7 @@
     </div>
   </div>
 
-  <div class="lakeDiv">
+  <div class="lakeDiv" [style.left.px]="440 + 70 * (playerCount - 5)">
     <div
       *ngFor="let lakeResult of lakeResults; let i = index; trackBy: trackByFn"
       class="lake"

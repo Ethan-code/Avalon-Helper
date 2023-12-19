@@ -43,9 +43,6 @@ enum LakeResult {
 })
 export class LegacyHelperComponent {
   private isFullscreen: boolean = false;
-  private vote: any = {
-    list: ['', '', '', '', ''],
-  };
 
   public roundMaxs = [2, 3, 2, 3, 3];
 
@@ -94,10 +91,6 @@ export class LegacyHelperComponent {
 
   public onAddClick() {
     if (this.playerCount < 10) {
-      this.vote.list.push('');
-      this.left += 70;
-      var lakeDiv = $('.lakeDiv');
-      lakeDiv.css('left', this.left + 'px');
       this.playerCount++;
     }
     this.updateRoundMaxs();
@@ -105,10 +98,6 @@ export class LegacyHelperComponent {
 
   public onDeleteClick() {
     if (this.playerCount > 5) {
-      this.vote.list.pop('');
-      this.left -= 70;
-      var lakeDiv = $('.lakeDiv');
-      lakeDiv.css('left', this.left + 'px');
       this.playerCount--;
     }
     this.updateRoundMaxs();

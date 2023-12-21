@@ -1,14 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 
-enum RoundResult {
+interface RoundResult {
+  badCounts: number,
+  result: RoundResultEnum
+}
+
+enum RoundResultEnum {
   NotYet = 'NotYet',
   Success = 'Success',
   Failure = 'Failure',
   NoPlay = 'NoPlay',
 }
 
-enum LakeResult {
+enum LakeResultEnum {
   NotYet = 'NotYet',
   Good = 'Good',
   Bad = 'Bad',
@@ -26,12 +31,10 @@ export class LegacyHelperComponent {
 
   public roundMaxs = [2, 3, 2, 3, 3];
 
-  private left = 440;
-
   public lakeResults = [
-    LakeResult.NotYet,
-    LakeResult.NotYet,
-    LakeResult.NotYet,
+    LakeResultEnum.NotYet,
+    LakeResultEnum.NotYet,
+    LakeResultEnum.NotYet,
   ];
   public get showlakeLogics(): boolean[] {
     return [
@@ -43,13 +46,23 @@ export class LegacyHelperComponent {
     ];
   }
 
-  public roundResults = [
-    RoundResult.NotYet,
-    RoundResult.NotYet,
-    RoundResult.NotYet,
-    RoundResult.NotYet,
-    RoundResult.NotYet,
-  ];
+  public roundResults: RoundResult[] = [
+    {
+      badCounts: 0,
+      result: RoundResultEnum.NotYet
+    },{
+      badCounts: 0,
+      result: RoundResultEnum.NotYet
+    },{
+      badCounts: 0,
+      result: RoundResultEnum.NotYet
+    },{
+      badCounts: 0,
+      result: RoundResultEnum.NotYet
+    },{
+      badCounts: 0,
+      result: RoundResultEnum.NotYet
+    }];
 
   public playerCount = 5;
   public get playerCounts(): number[] {
@@ -88,29 +101,47 @@ export class LegacyHelperComponent {
   }
 
   public onRoundClick(roundResult: RoundResult, index: number) {
-    if (roundResult === RoundResult.NotYet) {
-      this.roundResults[index] = RoundResult.Success;
-    } else if (roundResult === RoundResult.Success) {
-      this.roundResults[index] = RoundResult.Failure;
-    } else if (roundResult === RoundResult.Failure) {
-      this.roundResults[index] = RoundResult.NotYet;
+    if (roundResult.result === RoundResultEnum.NotYet) {
+      this.roundResults[index] = {
+        result: RoundResultEnum.Success,
+        badCounts: 0
+      };
+    } else if (roundResult.result === RoundResultEnum.Success) {
+      this.roundResults[index] = {
+        result: RoundResultEnum.Failure,
+        badCounts: 1
+      };
+    } else if (roundResult.result === RoundResultEnum.Failure) {
+      let badCounts = this.roundResults[index].badCounts;
+      if (badCounts < this.roundMaxs[index]) {
+        this.roundResults[index] = {
+          result: RoundResultEnum.Failure,
+          badCounts: badCounts + 1
+        };
+      } else {
+        this.roundResults[index] = {
+          result: RoundResultEnum.NotYet,
+          badCounts: 0
+        };
+      }
+      
     }
   }
 
-  public onLakeClick(lakeResult: LakeResult, index: number) {
-    if (lakeResult === LakeResult.NotYet) {
-      this.lakeResults[index] = LakeResult.Bad;
-    } else if (lakeResult === LakeResult.Bad) {
-      this.lakeResults[index] = LakeResult.Good;
-    } else if (lakeResult === LakeResult.Good) {
-      this.lakeResults[index] = LakeResult.NotYet;
+  public onLakeClick(lakeResult: LakeResultEnum, index: number) {
+    if (lakeResult === LakeResultEnum.NotYet) {
+      this.lakeResults[index] = LakeResultEnum.Bad;
+    } else if (lakeResult === LakeResultEnum.Bad) {
+      this.lakeResults[index] = LakeResultEnum.Good;
+    } else if (lakeResult === LakeResultEnum.Good) {
+      this.lakeResults[index] = LakeResultEnum.NotYet;
     }
   }
 
   public getRoundResult(roundResult: RoundResult) {
-    if (roundResult === RoundResult.Success) {
+    if (roundResult.result === RoundResultEnum.Success) {
       return 'left';
-    } else if (roundResult === RoundResult.Failure) {
+    } else if (roundResult.result === RoundResultEnum.Failure) {
       return 'right';
     } else {
       return 'center';
@@ -118,13 +149,24 @@ export class LegacyHelperComponent {
   }
 
   public getRoundTextColor(roundResult: RoundResult) {
-    return roundResult === 'NotYet' ? 'navy' : 'white';
+    return roundResult.result === 'NotYet' ? 'navy' : 'white';
   }
 
-  public getLakeResult(lakeResult: LakeResult) {
-    if (lakeResult === LakeResult.Good) {
+  public getBadCountsOrMax(index: number) {
+    const roundResult = this.roundResults[index];
+    if (roundResult.result === RoundResultEnum.Failure) {
+      return roundResult.badCounts;
+    } else if (roundResult.result === RoundResultEnum.NotYet){
+      return this.roundMaxs[index];
+    } else {
+      return '';
+    }
+  }
+
+  public getLakeResult(lakeResult: LakeResultEnum) {
+    if (lakeResult === LakeResultEnum.Good) {
       return 'right';
-    } else if (lakeResult === LakeResult.Bad) {
+    } else if (lakeResult === LakeResultEnum.Bad) {
       return 'center';
     } else {
       return 'left';

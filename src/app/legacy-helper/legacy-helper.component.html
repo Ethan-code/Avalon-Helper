@@ -37,7 +37,7 @@
         [style.color]="getRoundTextColor(roundResult)"
         (click)="onRoundClick(roundResult, i)"
       >
-        {{ roundMaxs[i] }}
+        {{ getBadCountsOrMax(i) }}
       </div>
     </div>
   </div>

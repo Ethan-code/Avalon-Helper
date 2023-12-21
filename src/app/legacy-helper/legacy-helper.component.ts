@@ -1,76 +1,75 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import {CommonModule} from "@angular/common";
+import {Component} from "@angular/core";
 
 interface RoundResult {
-  badCounts: number,
-  result: RoundResultEnum
+  badCounts: number;
+  result: RoundResultEnum;
 }
 
 enum RoundResultEnum {
-  NotYet = 'NotYet',
-  Success = 'Success',
-  Failure = 'Failure',
-  NoPlay = 'NoPlay',
+  NotYet = "NotYet",
+  Success = "Success",
+  Failure = "Failure",
+  NoPlay = "NoPlay",
 }
 
 enum LakeResultEnum {
-  NotYet = 'NotYet',
-  Good = 'Good',
-  Bad = 'Bad',
+  NotYet = "NotYet",
+  Good = "Good",
+  Bad = "Bad",
 }
 
 @Component({
-  selector: 'app-legacy-helper',
+  selector: "app-legacy-helper",
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './legacy-helper.component.html',
-  styleUrl: './legacy-helper.component.scss',
+  templateUrl: "./legacy-helper.component.html",
+  styleUrl: "./legacy-helper.component.scss",
 })
 export class LegacyHelperComponent {
   private isFullscreen: boolean = false;
 
   public roundMaxs = [2, 3, 2, 3, 3];
 
-  public lakeResults = [
-    LakeResultEnum.NotYet,
-    LakeResultEnum.NotYet,
-    LakeResultEnum.NotYet,
-  ];
+  public lakeResults = [LakeResultEnum.NotYet, LakeResultEnum.NotYet, LakeResultEnum.NotYet];
   public get showlakeLogics(): boolean[] {
     return [
       this.playerCount < 7,
-      this.playerCount < 7 || this.lakeResults[0] === 'NotYet',
-      this.playerCount < 7 ||
-        this.lakeResults[0] === 'NotYet' ||
-        this.lakeResults[1] === 'NotYet',
+      this.playerCount < 7 || this.lakeResults[0] === "NotYet",
+      this.playerCount < 7 || this.lakeResults[0] === "NotYet" || this.lakeResults[1] === "NotYet",
     ];
   }
 
   public roundResults: RoundResult[] = [
     {
       badCounts: 0,
-      result: RoundResultEnum.NotYet
-    },{
+      result: RoundResultEnum.NotYet,
+    },
+    {
       badCounts: 0,
-      result: RoundResultEnum.NotYet
-    },{
+      result: RoundResultEnum.NotYet,
+    },
+    {
       badCounts: 0,
-      result: RoundResultEnum.NotYet
-    },{
+      result: RoundResultEnum.NotYet,
+    },
+    {
       badCounts: 0,
-      result: RoundResultEnum.NotYet
-    },{
+      result: RoundResultEnum.NotYet,
+    },
+    {
       badCounts: 0,
-      result: RoundResultEnum.NotYet
-    }];
+      result: RoundResultEnum.NotYet,
+    },
+  ];
 
   public playerCount = 5;
   public get playerCounts(): number[] {
-    return Array.from({ length: this.playerCount }, (_, index) => index + 1);
+    return Array.from({length: this.playerCount}, (_, index) => index + 1);
   }
   public voteCount = 25;
   public get voteCounts(): number[] {
-    return Array.from({ length: this.voteCount }, (_, index) => index + 1);
+    return Array.from({length: this.voteCount}, (_, index) => index + 1);
   }
 
   public onFullscreenClick(): void {
@@ -104,27 +103,26 @@ export class LegacyHelperComponent {
     if (roundResult.result === RoundResultEnum.NotYet) {
       this.roundResults[index] = {
         result: RoundResultEnum.Success,
-        badCounts: 0
+        badCounts: 0,
       };
     } else if (roundResult.result === RoundResultEnum.Success) {
       this.roundResults[index] = {
         result: RoundResultEnum.Failure,
-        badCounts: 1
+        badCounts: 1,
       };
     } else if (roundResult.result === RoundResultEnum.Failure) {
       let badCounts = this.roundResults[index].badCounts;
       if (badCounts < this.roundMaxs[index]) {
         this.roundResults[index] = {
           result: RoundResultEnum.Failure,
-          badCounts: badCounts + 1
+          badCounts: badCounts + 1,
         };
       } else {
         this.roundResults[index] = {
           result: RoundResultEnum.NotYet,
-          badCounts: 0
+          badCounts: 0,
         };
       }
-      
     }
   }
 
@@ -140,36 +138,36 @@ export class LegacyHelperComponent {
 
   public getRoundResult(roundResult: RoundResult) {
     if (roundResult.result === RoundResultEnum.Success) {
-      return 'left';
+      return "left";
     } else if (roundResult.result === RoundResultEnum.Failure) {
-      return 'right';
+      return "right";
     } else {
-      return 'center';
+      return "center";
     }
   }
 
   public getRoundTextColor(roundResult: RoundResult) {
-    return roundResult.result === 'NotYet' ? 'navy' : 'white';
+    return roundResult.result === "NotYet" ? "navy" : "white";
   }
 
   public getBadCountsOrMax(index: number) {
     const roundResult = this.roundResults[index];
     if (roundResult.result === RoundResultEnum.Failure) {
       return roundResult.badCounts;
-    } else if (roundResult.result === RoundResultEnum.NotYet){
+    } else if (roundResult.result === RoundResultEnum.NotYet) {
       return this.roundMaxs[index];
     } else {
-      return '';
+      return "";
     }
   }
 
   public getLakeResult(lakeResult: LakeResultEnum) {
     if (lakeResult === LakeResultEnum.Good) {
-      return 'right';
+      return "right";
     } else if (lakeResult === LakeResultEnum.Bad) {
-      return 'center';
+      return "center";
     } else {
-      return 'left';
+      return "left";
     }
   }
 

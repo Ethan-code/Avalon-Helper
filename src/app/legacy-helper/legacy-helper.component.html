@@ -27,11 +27,7 @@
     </div>
     <div class="result">
       <div
-        *ngFor="
-          let roundResult of roundResults;
-          let i = index;
-          trackBy: trackByFn
-        "
+        *ngFor="let roundResult of roundResults; let i = index; trackBy: trackByFn"
         class="game"
         [style.background-position]="getRoundResult(roundResult)"
         [style.color]="getRoundTextColor(roundResult)"
@@ -70,7 +66,7 @@
     <div
       *ngFor="let lakeResult of lakeResults; let i = index; trackBy: trackByFn"
       class="lake"
-      [ngClass]="{ hiddenObj: showlakeLogics[i] }"
+      [ngClass]="{hiddenObj: showlakeLogics[i]}"
     >
       <div class="dropdown">
         <select class="players">

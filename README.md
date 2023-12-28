@@ -4,6 +4,9 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Change Log
 
+`20231222`
+1. 補回重構時遺失的「壞車任務失敗張數」功能
+
 `20231217` - `20231219`
 1. 移植到 Angular
 

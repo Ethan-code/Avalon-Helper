@@ -1,5 +1,22 @@
 import {CommonModule} from "@angular/common";
-import {Component} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
+
+// TODO: class 加入 id 進行識別
+class Person {
+  name: string;
+
+  constructor(name: string) {
+    this.name = name;
+  }
+}
+
+class Player {
+  person: Person;
+
+  constructor(name: string) {
+    this.person = new Person(name);
+  }
+}
 
 interface RoundResult {
   badCounts: number;
@@ -26,7 +43,7 @@ enum LakeResultEnum {
   templateUrl: "./legacy-helper.component.html",
   styleUrl: "./legacy-helper.component.scss",
 })
-export class LegacyHelperComponent {
+export class LegacyHelperComponent implements OnInit {
   private isFullscreen: boolean = false;
 
   public roundMaxs = [2, 3, 2, 3, 3];
@@ -63,6 +80,8 @@ export class LegacyHelperComponent {
     },
   ];
 
+  public players: Player[] = [];
+
   public playerCount = 5;
   public get playerCounts(): number[] {
     return Array.from({length: this.playerCount}, (_, index) => index + 1);
@@ -70,6 +89,10 @@ export class LegacyHelperComponent {
   public voteCount = 25;
   public get voteCounts(): number[] {
     return Array.from({length: this.voteCount}, (_, index) => index + 1);
+  }
+
+  public ngOnInit(): void {
+    this.initPlayer(5);
   }
 
   public onFullscreenClick(): void {
@@ -181,5 +204,10 @@ export class LegacyHelperComponent {
     } else {
       this.roundMaxs = [2, 3, 2, 3, 3];
     }
+  }
+
+  // 先在這裡刻死 User 名稱
+  private initPlayer(playerCount: number) {
+    this.players = Array.from({length: playerCount}, (_, index) => new Player(`Player${index}`));
   }
 }

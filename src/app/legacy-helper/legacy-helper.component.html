@@ -82,11 +82,20 @@
       ></div>
     </div>
   </div>
+</div>
 
-  <div *ngFor="let player of players; let i = index; trackBy: trackByFn" class="pl-2">
-    <div class="player">
-      {{ i + 1 }}號
-      <input type="text" size="7" placeholder="name" class="text-sm" [value]="player.name" />
+<form [formGroup]="form">
+  <div class="flex pt-4" formArrayName="players">
+    <div
+      *ngFor="let player of playerFormArray.controls; let i = index; trackBy: trackByFn"
+      [formGroupName]="i"
+      class="pl-2"
+    >
+      <div class="player">
+        {{ i + 1 }}號
+        <input type="text" size="7" placeholder="name" class="text-sm" formControlName="name" />
+      </div>
     </div>
   </div>
-</div>
+  {{ formJSON }}
+</form>

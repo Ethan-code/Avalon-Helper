@@ -32,6 +32,33 @@ export class Game {
   }
 }
 
+export class Quest {
+  order: number;
+  allowedCardCount: number;
+  questCards: QuestCard[];
+
+  constructor(order: number, allowedCardCount: number, questCards: QuestCard[]) {
+    this.order = order;
+    this.allowedCardCount = allowedCardCount;
+    this.questCards = questCards;
+  }
+}
+
+export class QuestCard {
+  status: QuestStatus;
+  player: Player | null;
+
+  constructor(status: QuestStatus, player: Player) {
+    this.status = status;
+    this.player = player;
+  }
+}
+
+enum QuestStatus {
+  Success = "Success",
+  Failure = "Failure",
+}
+
 // 好壞陣營 (Camp) 人員數量
 export const CAMP_PLAYER_COUNT_SETTING: {
   [playerCount: number]: {
@@ -65,3 +92,52 @@ export const CAMP_PLAYER_COUNT_SETTING: {
   },
 };
 
+// 任務 (Quest) 人員數量
+export const QUEST_PLAYER_COUNT_SETTING: {
+  [playerCount: number]: {
+    [questOrder: number]: number;
+  };
+} = {
+  5: {
+    1: 2,
+    2: 3,
+    3: 2,
+    4: 3,
+    5: 3,
+  },
+  6: {
+    1: 2,
+    2: 3,
+    3: 4,
+    4: 3,
+    5: 4,
+  },
+  7: {
+    1: 2,
+    2: 3,
+    3: 3,
+    4: 4,
+    5: 4,
+  },
+  8: {
+    1: 3,
+    2: 4,
+    3: 4,
+    4: 5,
+    5: 5,
+  },
+  9: {
+    1: 3,
+    2: 4,
+    3: 4,
+    4: 5,
+    5: 5,
+  },
+  10: {
+    1: 3,
+    2: 4,
+    3: 4,
+    4: 5,
+    5: 5,
+  },
+};

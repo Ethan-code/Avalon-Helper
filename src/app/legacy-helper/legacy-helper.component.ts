@@ -1,6 +1,7 @@
 import {CommonModule} from "@angular/common";
 import {Component, OnInit} from "@angular/core";
 import {Game} from "./model";
+import {FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 
 interface RoundResult {
   badCounts: number;
@@ -23,16 +24,22 @@ enum LakeResultEnum {
 @Component({
   selector: "app-legacy-helper",
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: "./legacy-helper.component.html",
   styleUrl: "./legacy-helper.component.scss",
 })
 export class LegacyHelperComponent implements OnInit {
-  public game!: Game;
-  public defaultPlayerCount= 5;
+  public form!: FormGroup;
 
-  public get players() {
-    return this.game.players
+  public game!: Game;
+  public defaultPlayerCount = 5;
+
+  get playerFormArray(): FormArray {
+    return this.form.get("players") as FormArray;
+  }
+
+  get formJSON(): string {
+    return JSON.stringify(this.form.getRawValue());
   }
 
   private isFullscreen: boolean = false;
@@ -80,9 +87,14 @@ export class LegacyHelperComponent implements OnInit {
     return Array.from({length: this.voteCount}, (_, index) => index + 1);
   }
 
+  constructor(private formBuilder: FormBuilder) {}
+
   public ngOnInit(): void {
+    this.form = this.initForm();
     this.game = this.initGame(this.defaultPlayerCount);
   }
+
+  public onSubmit(): void {}
 
   public onFullscreenClick(): void {
     if (!this.isFullscreen) {
@@ -193,6 +205,21 @@ export class LegacyHelperComponent implements OnInit {
     } else {
       this.roundMaxs = [2, 3, 2, 3, 3];
     }
+  }
+
+  private initForm(): FormGroup {
+    const playerControls = Array.from({length: this.defaultPlayerCount}, (_, index) =>
+      this.createPlayerControl(),
+    );
+    return this.formBuilder.group({
+      players: this.formBuilder.array(playerControls),
+    });
+  }
+
+  private createPlayerControl(): FormGroup {
+    return this.formBuilder.group({
+      name: [""],
+    });
   }
 
   private initGame(totalPlayerCount: number): Game {

@@ -1,22 +1,6 @@
 import {CommonModule} from "@angular/common";
 import {Component, OnInit} from "@angular/core";
-
-// TODO: class 加入 id 進行識別
-class Person {
-  name: string;
-
-  constructor(name: string) {
-    this.name = name;
-  }
-}
-
-class Player {
-  person: Person;
-
-  constructor(name: string) {
-    this.person = new Person(name);
-  }
-}
+import {Player} from "./model";
 
 interface RoundResult {
   badCounts: number;

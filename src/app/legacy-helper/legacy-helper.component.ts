@@ -1,6 +1,6 @@
 import {CommonModule} from "@angular/common";
 import {Component, OnInit} from "@angular/core";
-import {Player} from "./model";
+import {Game} from "./model";
 
 interface RoundResult {
   badCounts: number;
@@ -28,6 +28,13 @@ enum LakeResultEnum {
   styleUrl: "./legacy-helper.component.scss",
 })
 export class LegacyHelperComponent implements OnInit {
+  public game!: Game;
+  public defaultPlayerCount= 5;
+
+  public get players() {
+    return this.game.players
+  }
+
   private isFullscreen: boolean = false;
 
   public roundMaxs = [2, 3, 2, 3, 3];
@@ -64,8 +71,6 @@ export class LegacyHelperComponent implements OnInit {
     },
   ];
 
-  public players: Player[] = [];
-
   public playerCount = 5;
   public get playerCounts(): number[] {
     return Array.from({length: this.playerCount}, (_, index) => index + 1);
@@ -76,7 +81,7 @@ export class LegacyHelperComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.initPlayer(5);
+    this.game = this.initGame(this.defaultPlayerCount);
   }
 
   public onFullscreenClick(): void {
@@ -190,8 +195,7 @@ export class LegacyHelperComponent implements OnInit {
     }
   }
 
-  // 先在這裡刻死 User 名稱
-  private initPlayer(playerCount: number) {
-    this.players = Array.from({length: playerCount}, (_, index) => new Player(`Player${index}`));
+  private initGame(totalPlayerCount: number): Game {
+    return new Game(totalPlayerCount);
   }
 }

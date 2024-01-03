@@ -86,7 +86,7 @@
   <div *ngFor="let player of players; let i = index; trackBy: trackByFn" class="pl-2">
     <div class="player">
       {{ i + 1 }}號
-      <input type="text" size="7" placeholder="name" class="text-sm" [value]="player.person.name" />
+      <input type="text" size="7" placeholder="name" class="text-sm" [value]="player.name" />
     </div>
   </div>
 </div>

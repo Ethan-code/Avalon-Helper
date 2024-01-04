@@ -1,7 +1,7 @@
 import {CommonModule} from "@angular/common";
 import {Component, OnInit} from "@angular/core";
 import {Game} from "./model";
-import {FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
+import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule} from "@angular/forms";
 
 interface RoundResult {
   badCounts: number;
@@ -32,7 +32,8 @@ export class LegacyHelperComponent implements OnInit {
   public form!: FormGroup;
 
   public game!: Game;
-  public defaultPlayerCount = 5;
+  private defaultPlayerCount = 5;
+  private totalVoteCount = 25;
 
   get playerFormArray(): FormArray {
     return this.form.get("players") as FormArray;
@@ -208,17 +209,48 @@ export class LegacyHelperComponent implements OnInit {
   }
 
   private initForm(): FormGroup {
-    const playerControls = Array.from({length: this.defaultPlayerCount}, (_, index) =>
+    const playerControls = Array.from({length: this.defaultPlayerCount}, () =>
       this.createPlayerControl(),
     );
+    const roundControls = Array.from({length: this.totalVoteCount}, () =>
+      this.createRoundControl(),
+    );
+    const resultControls = Array.from({length: 5}, () => this.createResultControl());
+
     return this.formBuilder.group({
       players: this.formBuilder.array(playerControls),
+      rounds: this.formBuilder.array(roundControls),
+      results: this.formBuilder.array(resultControls),
     });
   }
 
   private createPlayerControl(): FormGroup {
     return this.formBuilder.group({
       name: [""],
+    });
+  }
+
+  private createRoundControl(): FormGroup {
+    const voteControls = Array.from({length: this.totalVoteCount}, (_, index) =>
+      this.createVoteControl(),
+    );
+
+    return this.formBuilder.group({
+      isPass: [false],
+      votes: this.formBuilder.array(voteControls),
+    });
+  }
+
+  private createVoteControl(): FormGroup {
+    return this.formBuilder.group({
+      vote: [false],
+      isMember: [false],
+    });
+  }
+
+  private createResultControl(): FormGroup {
+    return this.formBuilder.group({
+      result: [null],
     });
   }
 

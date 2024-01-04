@@ -35,7 +35,7 @@ export class LegacyHelperComponent implements OnInit {
   private defaultPlayerCount = 5;
   private totalVoteCount = 25;
 
-  get playerFormArray(): FormArray {
+  public get playerFormArray(): FormArray {
     return this.form.get("players") as FormArray;
   }
 
@@ -93,6 +93,8 @@ export class LegacyHelperComponent implements OnInit {
   public ngOnInit(): void {
     this.form = this.initForm();
     this.game = this.initGame(this.defaultPlayerCount);
+
+    this.playerFormArray.controls[0].get("");
   }
 
   public onSubmit(): void {}
@@ -196,6 +198,10 @@ export class LegacyHelperComponent implements OnInit {
     }
   }
 
+  public getVoteFormArray(index: number): FormArray {
+    return this.playerFormArray.controls[index].get("votes") as FormArray;
+  }
+
   private updateRoundMaxs() {
     if (this.playerCount == 6) {
       this.roundMaxs = [2, 3, 4, 3, 4];
@@ -225,19 +231,19 @@ export class LegacyHelperComponent implements OnInit {
   }
 
   private createPlayerControl(): FormGroup {
-    return this.formBuilder.group({
-      name: [""],
-    });
-  }
-
-  private createRoundControl(): FormGroup {
     const voteControls = Array.from({length: this.totalVoteCount}, (_, index) =>
       this.createVoteControl(),
     );
 
     return this.formBuilder.group({
-      isPass: [false],
+      name: [""],
       votes: this.formBuilder.array(voteControls),
+    });
+  }
+
+  private createRoundControl(): FormGroup {
+    return this.formBuilder.group({
+      isPass: [false],
     });
   }
 

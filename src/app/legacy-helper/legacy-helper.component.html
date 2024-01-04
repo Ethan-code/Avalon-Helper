@@ -1,101 +1,105 @@
-<div class="flex pt-4">
-  <div>
-    <div class="inline-flex ml-3">
-      <button
-        type="button"
-        class="bg-slate-300 hover:bg-slate-400 text-gray-800 text-3xl font-bold px-3 py-2 rounded-l"
-        (click)="onAddClick()"
-      >
-        ＋
-      </button>
-      <button
-        type="button"
-        class="bg-slate-300 hover:bg-slate-400 text-gray-800 text-3xl font-bold px-3 py-2 rounded-r"
-        (click)="onDeleteClick()"
-      >
-        －
-      </button>
-    </div>
-    <div class="mt-3 ml-3">
-      <button
-        type="button"
-        class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
-        (click)="onFullscreenClick()"
-      >
-        Fullscreen
-      </button>
-    </div>
-    <div class="result">
-      <div
-        *ngFor="let roundResult of roundResults; let i = index; trackBy: trackByFn"
-        class="game"
-        [style.background-position]="getRoundResult(roundResult)"
-        [style.color]="getRoundTextColor(roundResult)"
-        (click)="onRoundClick(roundResult, i)"
-      >
-        {{ getBadCountsOrMax(i) }}
-      </div>
-    </div>
-  </div>
-
-  <div>
-    <div class="empty-vote-round"></div>
-    <div *ngFor="let voteCount of voteCounts; let i = index; trackBy: trackByFn" class="vote-round">
-      <label>{{ (i % playerCount) + 1 }}號派票 <input type="checkbox" /> </label>
-    </div>
-  </div>
-
-  <div *ngFor="let playerCount of playerCounts; trackBy: trackByFn" class="pl-2">
-    <div class="player">
-      {{ playerCount }}號
-      <input type="text" size="7" placeholder="name" class="text-sm" />
-    </div>
-    <div *ngFor="let voteCount of voteCounts; trackBy: trackByFn" class="info">
-      <label>
-        <input id="ticket" type="checkbox" />
-        <div class="ticket"></div>
-      </label>
-      <label>
-        <input id="mission" type="checkbox" />
-        <div class="mission"></div>
-      </label>
-    </div>
-  </div>
-
-  <div class="lakeDiv" [style.left.px]="640 + 70 * (playerCount - 5)">
-    <div
-      *ngFor="let lakeResult of lakeResults; let i = index; trackBy: trackByFn"
-      class="lake"
-      [ngClass]="{hiddenObj: showlakeLogics[i]}"
-    >
-      <div class="dropdown">
-        <select class="players">
-          <option *ngFor="let playerCount of playerCounts" [value]="playerCount">
-            {{ playerCount }} 號
-          </option>
-        </select>
-      </div>
-      <div
-        class="gameLake"
-        [style.background-position]="getLakeResult(lakeResult)"
-        (click)="onLakeClick(lakeResult, i)"
-      ></div>
-    </div>
-  </div>
-</div>
-
 <form [formGroup]="form">
-  <div class="flex pt-4" formArrayName="players">
-    <div
-      *ngFor="let player of playerFormArray.controls; let i = index; trackBy: trackByFn"
-      [formGroupName]="i"
-      class="pl-2"
-    >
-      <div class="player">
-        {{ i + 1 }}號
-        <input type="text" size="7" placeholder="name" class="text-sm" formControlName="name" />
+  <div class="flex pt-4">
+    <div>
+      <div class="inline-flex ml-3">
+        <button
+          type="button"
+          class="bg-slate-300 hover:bg-slate-400 text-gray-800 text-3xl font-bold px-3 py-2 rounded-l"
+          (click)="onAddClick()"
+        >
+          ＋
+        </button>
+        <button
+          type="button"
+          class="bg-slate-300 hover:bg-slate-400 text-gray-800 text-3xl font-bold px-3 py-2 rounded-r"
+          (click)="onDeleteClick()"
+        >
+          －
+        </button>
+      </div>
+      <div class="mt-3 ml-3">
+        <button
+          type="button"
+          class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
+          (click)="onFullscreenClick()"
+        >
+          Fullscreen
+        </button>
+      </div>
+      <div class="result">
+        <div
+          *ngFor="let roundResult of roundResults; let i = index; trackBy: trackByFn"
+          class="game"
+          [style.background-position]="getRoundResult(roundResult)"
+          [style.color]="getRoundTextColor(roundResult)"
+          (click)="onRoundClick(roundResult, i)"
+        >
+          {{ getBadCountsOrMax(i) }}
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="empty-vote-round"></div>
+      <div
+        *ngFor="let voteCount of voteCounts; let i = index; trackBy: trackByFn"
+        class="vote-round"
+      >
+        <label>{{ (i % playerCount) + 1 }}號派票 <input type="checkbox" /> </label>
+      </div>
+    </div>
+
+    <ng-container formArrayName="players">
+      <div
+        *ngFor="let player of playerFormArray.controls; let i = index; trackBy: trackByFn"
+        [formGroupName]="i"
+        class="pl-2"
+      >
+        <div class="player">
+          {{ i + 1 }}號
+          <input type="text" size="7" placeholder="name" class="text-sm" formControlName="name" />
+        </div>
+
+        <ng-container formArrayName="votes">
+          <div
+            *ngFor="let vote of getVoteFormArray(i).controls; let i = index; trackBy: trackByFn"
+            [formGroupName]="i"
+            class="info"
+          >
+            <label>
+              <input id="ticket" type="checkbox" formControlName="vote" />
+              <div class="ticket"></div>
+            </label>
+            <label>
+              <input id="mission" type="checkbox" formControlName="isMember" />
+              <div class="mission"></div>
+            </label>
+          </div>
+        </ng-container>
+      </div>
+    </ng-container>
+
+    <div class="lakeDiv" [style.left.px]="640 + 70 * (playerCount - 5)">
+      <div
+        *ngFor="let lakeResult of lakeResults; let i = index; trackBy: trackByFn"
+        class="lake"
+        [ngClass]="{hiddenObj: showlakeLogics[i]}"
+      >
+        <div class="dropdown">
+          <select class="players">
+            <option *ngFor="let playerCount of playerCounts" [value]="playerCount">
+              {{ playerCount }} 號
+            </option>
+          </select>
+        </div>
+        <div
+          class="gameLake"
+          [style.background-position]="getLakeResult(lakeResult)"
+          (click)="onLakeClick(lakeResult, i)"
+        ></div>
       </div>
     </div>
   </div>
-  {{ formJSON }}
 </form>
+
+{{ formJSON }}

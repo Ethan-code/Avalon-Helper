@@ -39,45 +39,63 @@
       </div>
     </div>
 
-    <div>
-      <div class="empty-vote-round"></div>
-      <div
-        *ngFor="let voteCount of voteCounts; let i = index; trackBy: trackByFn"
-        class="vote-round"
-      >
-        <label>{{ (i % playerCount) + 1 }}號派票 <input type="checkbox" /> </label>
-      </div>
-    </div>
-
-    <ng-container formArrayName="players">
-      <div
-        *ngFor="let player of playerFormArray.controls; let i = index; trackBy: trackByFn"
-        [formGroupName]="i"
-        class="pl-2"
-      >
-        <div class="player">
-          {{ i + 1 }}號
-          <input type="text" size="7" placeholder="name" class="text-sm" formControlName="name" />
-        </div>
-
-        <ng-container formArrayName="votes">
+    <div class="flex flex-col">
+      <!-- Player -->
+      <ng-container formArrayName="players">
+        <div class="flex">
+          <div class="empty-vote-round"></div>
           <div
-            *ngFor="let vote of getVoteFormArray(i).controls; let i = index; trackBy: trackByFn"
+            *ngFor="let player of playerFormArray.controls; let i = index; trackBy: trackByFn"
             [formGroupName]="i"
-            class="info"
+            class="pl-2"
           >
-            <label>
-              <input id="ticket" type="checkbox" formControlName="vote" />
-              <div class="ticket"></div>
-            </label>
-            <label>
-              <input id="mission" type="checkbox" formControlName="isMember" />
-              <div class="mission"></div>
+            <div class="player">
+              {{ i + 1 }}號
+              <input
+                type="text"
+                size="7"
+                placeholder="name"
+                class="text-sm"
+                formControlName="name"
+              />
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- Round -->
+      <ng-container formArrayName="rounds">
+        <div
+          *ngFor="let round of roundFormArray.controls; let i = index; trackBy: trackByFn"
+          [formGroupName]="i"
+          class="flex"
+        >
+          <div class="vote-round">
+            <label
+              >{{ (i % playerCount) + 1 }}號派票 <input type="checkbox" formControlName="isPass" />
             </label>
           </div>
-        </ng-container>
-      </div>
-    </ng-container>
+          <ng-container formArrayName="votes">
+            <div
+              *ngFor="let vote of getVoteFormArray(i).controls; let i = index; trackBy: trackByFn"
+              [formGroupName]="i"
+              class="pl-2"
+            >
+              <div class="info">
+                <label>
+                  <input id="ticket" type="checkbox" formControlName="vote" />
+                  <div class="ticket"></div>
+                </label>
+                <label>
+                  <input id="mission" type="checkbox" formControlName="isMember" />
+                  <div class="mission"></div>
+                </label>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </ng-container>
+    </div>
 
     <div class="lakeDiv" [style.left.px]="640 + 70 * (playerCount - 5)">
       <div

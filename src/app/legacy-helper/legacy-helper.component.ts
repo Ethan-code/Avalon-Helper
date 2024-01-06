@@ -39,6 +39,10 @@ export class LegacyHelperComponent implements OnInit {
     return this.form.get("players") as FormArray;
   }
 
+  public get roundFormArray(): FormArray {
+    return this.form.get("rounds") as FormArray;
+  }
+
   get formJSON(): string {
     return JSON.stringify(this.form.getRawValue());
   }
@@ -111,6 +115,10 @@ export class LegacyHelperComponent implements OnInit {
   public onAddClick() {
     if (this.playerCount < 10) {
       this.playerCount++;
+      this.playerFormArray.controls.push(this.createPlayerControl());
+      for (let i = 0; i < this.totalVoteCount; i++) {
+        this.getVoteFormArray(i).controls.push(this.createVoteControl());
+      }
     }
     this.updateRoundMaxs();
   }
@@ -118,6 +126,10 @@ export class LegacyHelperComponent implements OnInit {
   public onDeleteClick() {
     if (this.playerCount > 5) {
       this.playerCount--;
+      this.playerFormArray.controls.pop();
+      for (let i = 0; i < this.totalVoteCount; i++) {
+        this.getVoteFormArray(i).controls.pop();
+      }
     }
     this.updateRoundMaxs();
   }
@@ -199,7 +211,7 @@ export class LegacyHelperComponent implements OnInit {
   }
 
   public getVoteFormArray(index: number): FormArray {
-    return this.playerFormArray.controls[index].get("votes") as FormArray;
+    return this.roundFormArray.controls[index].get("votes") as FormArray;
   }
 
   private updateRoundMaxs() {
@@ -231,19 +243,19 @@ export class LegacyHelperComponent implements OnInit {
   }
 
   private createPlayerControl(): FormGroup {
-    const voteControls = Array.from({length: this.totalVoteCount}, (_, index) =>
-      this.createVoteControl(),
-    );
-
     return this.formBuilder.group({
       name: [""],
-      votes: this.formBuilder.array(voteControls),
     });
   }
 
   private createRoundControl(): FormGroup {
+    const voteControls = Array.from({length: this.defaultPlayerCount}, (_, index) =>
+      this.createVoteControl(),
+    );
+
     return this.formBuilder.group({
       isPass: [false],
+      votes: this.formBuilder.array(voteControls),
     });
   }
 

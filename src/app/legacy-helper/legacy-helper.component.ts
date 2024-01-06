@@ -83,13 +83,8 @@ export class LegacyHelperComponent implements OnInit {
     },
   ];
 
-  public playerCount = 5;
-  public get playerCounts(): number[] {
-    return Array.from({length: this.playerCount}, (_, index) => index + 1);
-  }
-  public voteCount = 25;
-  public get voteCounts(): number[] {
-    return Array.from({length: this.voteCount}, (_, index) => index + 1);
+  public get playerCount(): number {
+    return this.playerFormArray.length;
   }
 
   constructor(private formBuilder: FormBuilder) {}
@@ -114,7 +109,6 @@ export class LegacyHelperComponent implements OnInit {
 
   public onAddClick() {
     if (this.playerCount < 10) {
-      this.playerCount++;
       this.playerFormArray.controls.push(this.createPlayerControl());
       for (let i = 0; i < this.totalVoteCount; i++) {
         this.getVoteFormArray(i).controls.push(this.createVoteControl());
@@ -125,7 +119,6 @@ export class LegacyHelperComponent implements OnInit {
 
   public onDeleteClick() {
     if (this.playerCount > 5) {
-      this.playerCount--;
       this.playerFormArray.controls.pop();
       for (let i = 0; i < this.totalVoteCount; i++) {
         this.getVoteFormArray(i).controls.pop();

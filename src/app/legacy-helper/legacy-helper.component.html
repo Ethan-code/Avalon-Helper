@@ -105,7 +105,7 @@
       >
         <div class="dropdown">
           <select class="players">
-            <option *ngFor="let playerCount of playerCounts" [value]="playerCount">
+            <option *ngFor="let playerCount of playerFormArray.controls" [value]="playerCount">
               {{ playerCount }} 號
             </option>
           </select>

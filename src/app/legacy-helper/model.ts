@@ -1,3 +1,25 @@
+export interface Player {
+  name: string;
+}
+export interface Round {
+  isPass: boolean;
+  votes: VoteResult[];
+}
+
+export interface VoteResult {
+  vote: boolean;
+  isMember: boolean;
+}
+
+export interface LakeResult {
+  targetPlayerIndex: number;
+  result: LakeStatus;
+}
+export interface RoundResult {
+  result: RoundStatus;
+  evilPlayerCount: number;
+}
+
 // 好壞陣營 (Camp) 人員數量
 export const CAMP_PLAYER_COUNT_SETTING: {
   [playerCount: number]: {
@@ -81,14 +103,14 @@ export const QUEST_PLAYER_COUNT_SETTING: {
   },
 };
 
-export enum RoundResult {
+export enum RoundStatus {
   NotYet = "NotYet",
   Success = "Success",
   Failure = "Failure",
   NoPlay = "NoPlay",
 }
 
-export enum LakeResult {
+export enum LakeStatus {
   NotYet = "NotYet",
   Good = "Good",
   Bad = "Bad",

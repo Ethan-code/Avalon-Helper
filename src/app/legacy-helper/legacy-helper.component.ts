@@ -1,5 +1,5 @@
 import {CommonModule} from "@angular/common";
-import {Component, OnInit} from "@angular/core";
+import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
 import {
   AbstractControl,
   FormArray,
@@ -11,8 +11,12 @@ import {FileSaverModule, FileSaverService} from "ngx-filesaver";
 import {
   CAMP_PLAYER_COUNT_SETTING,
   LakeResult,
+  LakeStatus,
+  Player,
   QUEST_PLAYER_COUNT_SETTING,
+  Round,
   RoundResult,
+  RoundStatus,
 } from "./model";
 
 @Component({
@@ -49,8 +53,10 @@ export class LegacyHelperComponent implements OnInit {
     const lakeResult2 = this.lakeResultFormArray.controls[1].get("result")?.value;
     return [
       this.playerCount < 7,
-      this.playerCount < 7 || lakeResult1 === "NotYet",
-      this.playerCount < 7 || lakeResult1 === "NotYet" || lakeResult2 === "NotYet",
+      this.playerCount < 7 || lakeResult1 === LakeStatus.NotYet,
+      this.playerCount < 7 ||
+        lakeResult1 === LakeStatus.NotYet ||
+        lakeResult2 === LakeStatus.NotYet,
     ];
   }
 
@@ -58,10 +64,12 @@ export class LegacyHelperComponent implements OnInit {
     return this.playerFormArray.length;
   }
 
+  @ViewChild("fileInput") fileInput?: ElementRef<HTMLInputElement>;
+
   constructor(private formBuilder: FormBuilder, private fileSaverService: FileSaverService) {}
 
   public ngOnInit(): void {
-    this.form = this.initForm();
+    this.form = this.initForm(this.defaultPlayerCount, 0);
   }
 
   public onFullscreenClick(): void {
@@ -73,8 +81,47 @@ export class LegacyHelperComponent implements OnInit {
     this.isFullscreen = !this.isFullscreen;
   }
 
-  public onDownloadClick(): void {
-    const jsonString = JSON.stringify(this.form.getRawValue(), null, 2);
+  public onImportClick(): void {
+    if (this.fileInput) {
+      this.fileInput.nativeElement.click();
+    }
+  }
+
+  public onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file: File | null = input.files![0];
+    if (!file) {
+      return;
+    }
+
+    const checkInputAndSetFormValue = () => {
+      const content: string | ArrayBuffer | null = reader.result;
+      if (typeof content !== "string") {
+        return;
+      }
+
+      const gameData = JSON.parse(content) as {
+        players: Player[];
+        rounds: Round[];
+        lakeResults: LakeResult[];
+        results: RoundResult[];
+      };
+      const playerCount = gameData.players.length;
+      const lakReResultCount = gameData.lakeResults.length;
+
+      this.form = this.initForm(playerCount, lakReResultCount);
+      setTimeout(() => {
+        this.form.setValue(gameData);
+      }, 0);
+    };
+
+    const reader = new FileReader();
+    reader.onload = checkInputAndSetFormValue;
+    reader.readAsText(file);
+  }
+
+  public onExportClick(): void {
+    const jsonString = JSON.stringify(this.form.getRawValue());
     const blob = new Blob([jsonString], {type: "application/json"});
     this.fileSaverService.save(blob, `avalon-helper.json`);
   }
@@ -106,27 +153,27 @@ export class LegacyHelperComponent implements OnInit {
   }
 
   public onRoundClick(resultControl: AbstractControl): void {
-    const currentResult: RoundResult = resultControl.get("result")?.value;
+    const currentResult: RoundStatus = resultControl.get("result")?.value;
 
-    if (currentResult === RoundResult.NotYet) {
+    if (currentResult === RoundStatus.NotYet) {
       resultControl.patchValue({
-        result: RoundResult.Success,
+        result: RoundStatus.Success,
       });
-    } else if (currentResult === RoundResult.Success) {
+    } else if (currentResult === RoundStatus.Success) {
       resultControl.patchValue({
-        result: RoundResult.Failure,
+        result: RoundStatus.Failure,
         evilPlayerCount: 1,
       });
-    } else if (currentResult === RoundResult.Failure) {
+    } else if (currentResult === RoundStatus.Failure) {
       const evilPlayerCount = resultControl.get("evilPlayerCount")?.value;
       if (evilPlayerCount < CAMP_PLAYER_COUNT_SETTING[this.playerCount].evil) {
         resultControl.patchValue({
-          result: RoundResult.Failure,
+          result: RoundStatus.Failure,
           evilPlayerCount: evilPlayerCount + 1,
         });
       } else {
         resultControl.patchValue({
-          result: RoundResult.NotYet,
+          result: RoundStatus.NotYet,
           evilPlayerCount: 0,
         });
       }
@@ -135,18 +182,18 @@ export class LegacyHelperComponent implements OnInit {
 
   public onLakeClick(lakeResultControl: AbstractControl): void {
     const lakeResult = lakeResultControl.get("result")?.value;
-    if (lakeResult === LakeResult.NotYet) {
+    if (lakeResult === LakeStatus.NotYet) {
       lakeResultControl.patchValue({
-        result: LakeResult.Bad,
+        result: LakeStatus.Bad,
       });
       this.lakeResultFormArray.controls.push(this.createLakeResultControl());
-    } else if (lakeResult === LakeResult.Bad) {
+    } else if (lakeResult === LakeStatus.Bad) {
       lakeResultControl.patchValue({
-        result: LakeResult.Good,
+        result: LakeStatus.Good,
       });
-    } else if (lakeResult === LakeResult.Good) {
+    } else if (lakeResult === LakeStatus.Good) {
       lakeResultControl.patchValue({
-        result: LakeResult.NotYet,
+        result: LakeStatus.NotYet,
       });
       this.lakeResultFormArray.controls.pop();
     }
@@ -158,9 +205,9 @@ export class LegacyHelperComponent implements OnInit {
 
   public getRoundResult(resultControl: AbstractControl): string {
     const result = resultControl.get("result")?.value;
-    if (result === RoundResult.Success) {
+    if (result === RoundStatus.Success) {
       return "left";
-    } else if (result === RoundResult.Failure) {
+    } else if (result === RoundStatus.Failure) {
       return "right";
     } else {
       return "center";
@@ -169,16 +216,16 @@ export class LegacyHelperComponent implements OnInit {
 
   public getRoundTextColor(roundControl: AbstractControl): string {
     const result = roundControl.get("result")?.value;
-    return result === RoundResult.NotYet ? "navy" : "white";
+    return result === RoundStatus.NotYet ? "navy" : "white";
   }
 
   public getBadCountsOrMax(qeustIndex: number): string {
     const roundControl = this.resultFormArray.at(qeustIndex);
     const result = roundControl.get("result")?.value;
 
-    if (result === RoundResult.Failure) {
+    if (result === RoundStatus.Failure) {
       return roundControl.get("evilPlayerCount")?.value;
-    } else if (result === RoundResult.NotYet) {
+    } else if (result === RoundStatus.NotYet) {
       return QUEST_PLAYER_COUNT_SETTING[this.playerCount][qeustIndex + 1].toString();
     } else {
       return "";
@@ -187,9 +234,9 @@ export class LegacyHelperComponent implements OnInit {
 
   public getLakeResultPostion(lakeResultControl: AbstractControl): string {
     const lakeResult = lakeResultControl.get("result")?.value;
-    if (lakeResult === LakeResult.Good) {
+    if (lakeResult === LakeStatus.Good) {
       return "right";
-    } else if (lakeResult === LakeResult.Bad) {
+    } else if (lakeResult === LakeStatus.Bad) {
       return "center";
     } else {
       return "left";
@@ -200,26 +247,30 @@ export class LegacyHelperComponent implements OnInit {
     return this.roundFormArray.controls[index].get("votes") as FormArray;
   }
 
-  private initForm(): FormGroup {
+  private initForm(playerCount: number, lakeResultCount: number): FormGroup {
     return this.formBuilder.group({
-      players: this.formBuilder.array(this.createPlayerControls()),
-      rounds: this.formBuilder.array(this.createRoundControls()),
-      lakeResults: this.formBuilder.array([]),
+      players: this.formBuilder.array(this.createPlayerControls(playerCount)),
+      rounds: this.formBuilder.array(this.createRoundControls(playerCount)),
+      lakeResults: this.formBuilder.array(this.createLakeResultControls(lakeResultCount)),
       results: this.formBuilder.array(this.createResultControls()),
     });
   }
 
   // Multiple Controls
-  private createPlayerControls(): FormGroup[] {
-    return Array.from({length: this.defaultPlayerCount}, () => this.createPlayerControl());
+  private createPlayerControls(playerCount: number): FormGroup[] {
+    return Array.from({length: playerCount}, () => this.createPlayerControl());
   }
 
-  private createRoundControls(): FormGroup[] {
-    return Array.from({length: this.totalVoteCount}, () => this.createRoundControl());
+  private createRoundControls(playerCount: number): FormGroup[] {
+    return Array.from({length: this.totalVoteCount}, () => this.createRoundControl(playerCount));
   }
 
-  private createVoteControls(): FormGroup[] {
-    return Array.from({length: this.defaultPlayerCount}, () => this.createVoteControl());
+  private createLakeResultControls(lakeResultCount: number): FormGroup[] {
+    return Array.from({length: lakeResultCount}, () => this.createLakeResultControl());
+  }
+
+  private createVoteControls(playerCount: number): FormGroup[] {
+    return Array.from({length: playerCount}, () => this.createVoteControl());
   }
 
   private createResultControls(): FormGroup[] {
@@ -233,10 +284,10 @@ export class LegacyHelperComponent implements OnInit {
     });
   }
 
-  private createRoundControl(): FormGroup {
+  private createRoundControl(playerCount: number): FormGroup {
     return this.formBuilder.group({
       isPass: [false],
-      votes: this.formBuilder.array(this.createVoteControls()),
+      votes: this.formBuilder.array(this.createVoteControls(playerCount)),
     });
   }
 
@@ -250,13 +301,13 @@ export class LegacyHelperComponent implements OnInit {
   private createLakeResultControl(): FormGroup {
     return this.formBuilder.group({
       targetPlayerIndex: null,
-      result: [LakeResult.NotYet],
+      result: [LakeStatus.NotYet],
     });
   }
 
   private createResultControl(): FormGroup {
     return this.formBuilder.group({
-      result: [RoundResult.NotYet],
+      result: [RoundStatus.NotYet],
       evilPlayerCount: 0,
     });
   }

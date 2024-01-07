@@ -26,6 +26,7 @@ export class LegacyHelperComponent implements OnInit {
   public form!: FormGroup;
 
   private defaultPlayerCount = 5;
+  private totalRoundCount = 5;
   private totalVoteCount = 25;
 
   public get playerFormArray(): FormArray {
@@ -72,7 +73,7 @@ export class LegacyHelperComponent implements OnInit {
     this.isFullscreen = !this.isFullscreen;
   }
 
-  public onAddClick() {
+  public onAddClick(): void {
     if (this.playerCount < 10) {
       this.playerFormArray.controls.push(this.createPlayerControl());
       for (let i = 0; i < this.totalVoteCount; i++) {
@@ -90,11 +91,7 @@ export class LegacyHelperComponent implements OnInit {
     }
   }
 
-  public trackByFn(index: number, item: any) {
-    return index;
-  }
-
-  public onRoundClick(resultControl: AbstractControl) {
+  public onRoundClick(resultControl: AbstractControl): void {
     const currentResult: RoundResult = resultControl.get("result")?.value;
 
     if (currentResult === RoundResult.NotYet) {
@@ -122,7 +119,7 @@ export class LegacyHelperComponent implements OnInit {
     }
   }
 
-  public onLakeClick(lakeResult: LakeResultEnum, index: number) {
+  public onLakeClick(lakeResult: LakeResultEnum, index: number): void {
     if (lakeResult === LakeResultEnum.NotYet) {
       this.lakeResults[index] = LakeResultEnum.Bad;
     } else if (lakeResult === LakeResultEnum.Bad) {
@@ -132,7 +129,11 @@ export class LegacyHelperComponent implements OnInit {
     }
   }
 
-  public getRoundResult(resultControl: AbstractControl) {
+  public trackByFn(index: number, item: any): number {
+    return index;
+  }
+
+  public getRoundResult(resultControl: AbstractControl): string {
     const result = resultControl.get("result")?.value;
     if (result === RoundResult.Success) {
       return "left";
@@ -143,7 +144,7 @@ export class LegacyHelperComponent implements OnInit {
     }
   }
 
-  public getRoundTextColor(roundControl: AbstractControl) {
+  public getRoundTextColor(roundControl: AbstractControl): string {
     const result = roundControl.get("result")?.value;
     return result === RoundResult.NotYet ? "navy" : "white";
   }
@@ -161,7 +162,7 @@ export class LegacyHelperComponent implements OnInit {
     }
   }
 
-  public getLakeResult(lakeResult: LakeResultEnum) {
+  public getLakeResult(lakeResult: LakeResultEnum): string {
     if (lakeResult === LakeResultEnum.Good) {
       return "right";
     } else if (lakeResult === LakeResultEnum.Bad) {
@@ -176,19 +177,27 @@ export class LegacyHelperComponent implements OnInit {
   }
 
   private initForm(): FormGroup {
-    const playerControls = Array.from({length: this.defaultPlayerCount}, () =>
-      this.createPlayerControl(),
-    );
-    const roundControls = Array.from({length: this.totalVoteCount}, () =>
-      this.createRoundControl(),
-    );
-    const resultControls = Array.from({length: 5}, () => this.createResultControl());
-
     return this.formBuilder.group({
-      players: this.formBuilder.array(playerControls),
-      rounds: this.formBuilder.array(roundControls),
-      results: this.formBuilder.array(resultControls),
+      players: this.formBuilder.array(this.createPlayerControls()),
+      rounds: this.formBuilder.array(this.createRoundControls()),
+      results: this.formBuilder.array(this.createResultControls()),
     });
+  }
+
+  private createPlayerControls(): FormGroup[] {
+    return Array.from({length: this.defaultPlayerCount}, () => this.createPlayerControl());
+  }
+
+  private createRoundControls(): FormGroup[] {
+    return Array.from({length: this.totalVoteCount}, () => this.createRoundControl());
+  }
+
+  private createVoteControls(): FormGroup[] {
+    return Array.from({length: this.defaultPlayerCount}, () => this.createVoteControl());
+  }
+
+  private createResultControls(): FormGroup[] {
+    return Array.from({length: this.totalRoundCount}, () => this.createResultControl());
   }
 
   private createPlayerControl(): FormGroup {
@@ -198,13 +207,9 @@ export class LegacyHelperComponent implements OnInit {
   }
 
   private createRoundControl(): FormGroup {
-    const voteControls = Array.from({length: this.defaultPlayerCount}, (_, index) =>
-      this.createVoteControl(),
-    );
-
     return this.formBuilder.group({
       isPass: [false],
-      votes: this.formBuilder.array(voteControls),
+      votes: this.formBuilder.array(this.createVoteControls()),
     });
   }
 

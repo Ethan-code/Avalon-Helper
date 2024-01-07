@@ -1,19 +1,13 @@
 import {CommonModule} from "@angular/common";
 import {Component, OnInit} from "@angular/core";
-import {Game} from "./model";
-import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule} from "@angular/forms";
-
-interface RoundResult {
-  badCounts: number;
-  result: RoundResultEnum;
-}
-
-enum RoundResultEnum {
-  NotYet = "NotYet",
-  Success = "Success",
-  Failure = "Failure",
-  NoPlay = "NoPlay",
-}
+import {
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+} from "@angular/forms";
+import {CAMP_PLAYER_COUNT_SETTING, Game, QUEST_PLAYER_COUNT_SETTING, RoundResult} from "./model";
 
 enum LakeResultEnum {
   NotYet = "NotYet",
@@ -38,9 +32,11 @@ export class LegacyHelperComponent implements OnInit {
   public get playerFormArray(): FormArray {
     return this.form.get("players") as FormArray;
   }
-
   public get roundFormArray(): FormArray {
     return this.form.get("rounds") as FormArray;
+  }
+  public get resultFormArray(): FormArray {
+    return this.form.get("results") as FormArray;
   }
 
   get formJSON(): string {
@@ -48,8 +44,6 @@ export class LegacyHelperComponent implements OnInit {
   }
 
   private isFullscreen: boolean = false;
-
-  public roundMaxs = [2, 3, 2, 3, 3];
 
   public lakeResults = [LakeResultEnum.NotYet, LakeResultEnum.NotYet, LakeResultEnum.NotYet];
   public get showlakeLogics(): boolean[] {
@@ -59,29 +53,6 @@ export class LegacyHelperComponent implements OnInit {
       this.playerCount < 7 || this.lakeResults[0] === "NotYet" || this.lakeResults[1] === "NotYet",
     ];
   }
-
-  public roundResults: RoundResult[] = [
-    {
-      badCounts: 0,
-      result: RoundResultEnum.NotYet,
-    },
-    {
-      badCounts: 0,
-      result: RoundResultEnum.NotYet,
-    },
-    {
-      badCounts: 0,
-      result: RoundResultEnum.NotYet,
-    },
-    {
-      badCounts: 0,
-      result: RoundResultEnum.NotYet,
-    },
-    {
-      badCounts: 0,
-      result: RoundResultEnum.NotYet,
-    },
-  ];
 
   public get playerCount(): number {
     return this.playerFormArray.length;
@@ -114,7 +85,6 @@ export class LegacyHelperComponent implements OnInit {
         this.getVoteFormArray(i).controls.push(this.createVoteControl());
       }
     }
-    this.updateRoundMaxs();
   }
 
   public onDeleteClick() {
@@ -124,36 +94,36 @@ export class LegacyHelperComponent implements OnInit {
         this.getVoteFormArray(i).controls.pop();
       }
     }
-    this.updateRoundMaxs();
   }
 
   public trackByFn(index: number, item: any) {
     return index;
   }
 
-  public onRoundClick(roundResult: RoundResult, index: number) {
-    if (roundResult.result === RoundResultEnum.NotYet) {
-      this.roundResults[index] = {
-        result: RoundResultEnum.Success,
-        badCounts: 0,
-      };
-    } else if (roundResult.result === RoundResultEnum.Success) {
-      this.roundResults[index] = {
-        result: RoundResultEnum.Failure,
-        badCounts: 1,
-      };
-    } else if (roundResult.result === RoundResultEnum.Failure) {
-      let badCounts = this.roundResults[index].badCounts;
-      if (badCounts < this.roundMaxs[index]) {
-        this.roundResults[index] = {
-          result: RoundResultEnum.Failure,
-          badCounts: badCounts + 1,
-        };
+  public onRoundClick(resultControl: AbstractControl) {
+    const currentResult: RoundResult = resultControl.get("result")?.value;
+
+    if (currentResult === RoundResult.NotYet) {
+      resultControl.patchValue({
+        result: RoundResult.Success,
+      });
+    } else if (currentResult === RoundResult.Success) {
+      resultControl.patchValue({
+        result: RoundResult.Failure,
+        evilPlayerCount: 1,
+      });
+    } else if (currentResult === RoundResult.Failure) {
+      const evilPlayerCount = resultControl.get("evilPlayerCount")?.value;
+      if (evilPlayerCount < CAMP_PLAYER_COUNT_SETTING[this.playerCount].evil) {
+        resultControl.patchValue({
+          result: RoundResult.Failure,
+          evilPlayerCount: evilPlayerCount + 1,
+        });
       } else {
-        this.roundResults[index] = {
-          result: RoundResultEnum.NotYet,
-          badCounts: 0,
-        };
+        resultControl.patchValue({
+          result: RoundResult.NotYet,
+          evilPlayerCount: 0,
+        });
       }
     }
   }
@@ -168,26 +138,30 @@ export class LegacyHelperComponent implements OnInit {
     }
   }
 
-  public getRoundResult(roundResult: RoundResult) {
-    if (roundResult.result === RoundResultEnum.Success) {
+  public getRoundResult(resultControl: AbstractControl) {
+    const result = resultControl.get("result")?.value;
+    if (result === RoundResult.Success) {
       return "left";
-    } else if (roundResult.result === RoundResultEnum.Failure) {
+    } else if (result === RoundResult.Failure) {
       return "right";
     } else {
       return "center";
     }
   }
 
-  public getRoundTextColor(roundResult: RoundResult) {
-    return roundResult.result === "NotYet" ? "navy" : "white";
+  public getRoundTextColor(roundControl: AbstractControl) {
+    const result = roundControl.get("result")?.value;
+    return result === RoundResult.NotYet ? "navy" : "white";
   }
 
-  public getBadCountsOrMax(index: number) {
-    const roundResult = this.roundResults[index];
-    if (roundResult.result === RoundResultEnum.Failure) {
-      return roundResult.badCounts;
-    } else if (roundResult.result === RoundResultEnum.NotYet) {
-      return this.roundMaxs[index];
+  public getBadCountsOrMax(qeustIndex: number): string {
+    const roundControl = this.resultFormArray.at(qeustIndex);
+    const result = roundControl.get("result")?.value;
+
+    if (result === RoundResult.Failure) {
+      return roundControl.get("evilPlayerCount")?.value;
+    } else if (result === RoundResult.NotYet) {
+      return QUEST_PLAYER_COUNT_SETTING[this.playerCount][qeustIndex + 1].toString();
     } else {
       return "";
     }
@@ -205,18 +179,6 @@ export class LegacyHelperComponent implements OnInit {
 
   public getVoteFormArray(index: number): FormArray {
     return this.roundFormArray.controls[index].get("votes") as FormArray;
-  }
-
-  private updateRoundMaxs() {
-    if (this.playerCount == 6) {
-      this.roundMaxs = [2, 3, 4, 3, 4];
-    } else if (this.playerCount == 7) {
-      this.roundMaxs = [2, 3, 3, 4, 4];
-    } else if (this.playerCount >= 8) {
-      this.roundMaxs = [3, 4, 4, 5, 5];
-    } else {
-      this.roundMaxs = [2, 3, 2, 3, 3];
-    }
   }
 
   private initForm(): FormGroup {
@@ -261,7 +223,8 @@ export class LegacyHelperComponent implements OnInit {
 
   private createResultControl(): FormGroup {
     return this.formBuilder.group({
-      result: [null],
+      result: ["NotYet"],
+      evilPlayerCount: 0,
     });
   }
 

@@ -141,3 +141,10 @@ export const QUEST_PLAYER_COUNT_SETTING: {
     5: 5,
   },
 };
+
+export enum RoundResult {
+  NotYet = "NotYet",
+  Success = "Success",
+  Failure = "Failure",
+  NoPlay = "NoPlay",
+}

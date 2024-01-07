@@ -1,6 +1,7 @@
 <form [formGroup]="form">
   <div class="flex pt-4">
     <div>
+      <!-- Increase or Decrease Player -->
       <div class="inline-flex ml-3">
         <button
           type="button"
@@ -17,25 +18,35 @@
           －
         </button>
       </div>
+
+      <!-- Full Screen -->
       <div class="mt-3 ml-3">
         <button
           type="button"
           class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
           (click)="onFullscreenClick()"
         >
-          Fullscreen
+          FullScreen
         </button>
       </div>
+
+      <!-- Quest Result -->
       <div class="result">
-        <div
-          *ngFor="let roundResult of roundResults; let i = index; trackBy: trackByFn"
-          class="game"
-          [style.background-position]="getRoundResult(roundResult)"
-          [style.color]="getRoundTextColor(roundResult)"
-          (click)="onRoundClick(roundResult, i)"
-        >
-          {{ getBadCountsOrMax(i) }}
-        </div>
+        <ng-container formArrayName="results">
+          <div
+            *ngFor="let result of resultFormArray.controls; let i = index; trackBy: trackByFn"
+            class="game"
+            [style.background-position]="getRoundResult(result)"
+            [style.color]="getRoundTextColor(result)"
+            (click)="onRoundClick(result)"
+          >
+            {{ getBadCountsOrMax(i) }}
+            <span class="hidden" [formGroupName]="i">
+              <input type="checkbox" formControlName="result" />
+              <input type="number" formContronName="evilPlayerCount" />
+            </span>
+          </div>
+        </ng-container>
       </div>
     </div>
 
@@ -97,6 +108,7 @@
       </ng-container>
     </div>
 
+    <!-- Lady of the Lake -->
     <div class="lakeDiv" [style.left.px]="640 + 70 * (playerCount - 5)">
       <div
         *ngFor="let lakeResult of lakeResults; let i = index; trackBy: trackByFn"

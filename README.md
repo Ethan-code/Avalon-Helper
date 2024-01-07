@@ -1,8 +1,15 @@
-# AvalonHelper
+# 阿瓦隆派票紀錄系統 AvalonHelper
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.7.
 
 ## Change Log
+`20240107`
+1. 新增上傳遊戲 JSON 資料按鈕
+2. 當修改人數時，重置紀錄
+3. 修正標示壞人數量會超過遊戲壞人數的問題
+
+`20240106`
+1. 新增下載遊戲 JSON 資料按鈕
 
 `20231222`
 1. 補回重構時遺失的「壞車任務失敗張數」功能

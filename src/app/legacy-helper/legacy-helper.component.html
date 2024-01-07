@@ -59,7 +59,7 @@
             class="game"
             [style.background-position]="getRoundResult(result)"
             [style.color]="getRoundTextColor(result)"
-            (click)="onRoundClick(result)"
+            (click)="onRoundClick(result, i)"
           >
             {{ getBadCountsOrMax(i) }}
             <span class="hidden" [formGroupName]="i">

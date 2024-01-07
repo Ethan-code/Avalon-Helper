@@ -134,9 +134,9 @@ export class LegacyHelperComponent implements OnInit {
       }
     }
 
-    if (this.playerCount === 7) {
-      this.lakeResultFormArray.controls.push(this.createLakeResultControl());
-    }
+    // reset form value
+    const lakeResultCount = this.playerCount >= 7 ? 1 : 0;
+    this.form = this.initForm(this.playerCount, lakeResultCount);
   }
 
   public onDeleteClick() {
@@ -147,12 +147,12 @@ export class LegacyHelperComponent implements OnInit {
       }
     }
 
-    if (this.playerCount < 7) {
-      this.lakeResultFormArray.clear();
-    }
+    // reset form value
+    const lakeResultCount = this.playerCount >= 7 ? 1 : 0;
+    this.form = this.initForm(this.playerCount, lakeResultCount);
   }
 
-  public onRoundClick(resultControl: AbstractControl): void {
+  public onRoundClick(resultControl: AbstractControl, roundIndex: number): void {
     const currentResult: RoundStatus = resultControl.get("result")?.value;
 
     if (currentResult === RoundStatus.NotYet) {

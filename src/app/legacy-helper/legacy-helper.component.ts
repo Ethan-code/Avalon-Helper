@@ -7,6 +7,7 @@ import {
   FormGroup,
   ReactiveFormsModule,
 } from "@angular/forms";
+import {FileSaverModule, FileSaverService} from "ngx-filesaver";
 import {
   CAMP_PLAYER_COUNT_SETTING,
   LakeResult,
@@ -17,7 +18,7 @@ import {
 @Component({
   selector: "app-legacy-helper",
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FileSaverModule],
   templateUrl: "./legacy-helper.component.html",
   styleUrl: "./legacy-helper.component.scss",
 })
@@ -41,10 +42,6 @@ export class LegacyHelperComponent implements OnInit {
     return this.form.get("lakeResults") as FormArray;
   }
 
-  get formJSON(): string {
-    return JSON.stringify(this.form.getRawValue());
-  }
-
   private isFullscreen: boolean = false;
 
   public get showlakeLogics(): boolean[] {
@@ -61,7 +58,7 @@ export class LegacyHelperComponent implements OnInit {
     return this.playerFormArray.length;
   }
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder, private fileSaverService: FileSaverService) {}
 
   public ngOnInit(): void {
     this.form = this.initForm();
@@ -74,6 +71,12 @@ export class LegacyHelperComponent implements OnInit {
       document.exitFullscreen();
     }
     this.isFullscreen = !this.isFullscreen;
+  }
+
+  public onDownloadClick(): void {
+    const jsonString = JSON.stringify(this.form.getRawValue(), null, 2);
+    const blob = new Blob([jsonString], {type: "application/json"});
+    this.fileSaverService.save(blob, `avalon-helper.json`);
   }
 
   public onAddClick(): void {

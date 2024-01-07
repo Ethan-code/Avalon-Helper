@@ -7,6 +7,8 @@ import {
   FormGroup,
   ReactiveFormsModule,
 } from "@angular/forms";
+import {formatISO} from "date-fns";
+import {DateFnsModule} from "ngx-date-fns";
 import {FileSaverModule, FileSaverService} from "ngx-filesaver";
 import {
   CAMP_PLAYER_COUNT_SETTING,
@@ -22,7 +24,7 @@ import {
 @Component({
   selector: "app-legacy-helper",
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FileSaverModule],
+  imports: [CommonModule, ReactiveFormsModule, FileSaverModule, DateFnsModule],
   templateUrl: "./legacy-helper.component.html",
   styleUrl: "./legacy-helper.component.scss",
 })
@@ -123,7 +125,8 @@ export class LegacyHelperComponent implements OnInit {
   public onExportClick(): void {
     const jsonString = JSON.stringify(this.form.getRawValue());
     const blob = new Blob([jsonString], {type: "application/json"});
-    this.fileSaverService.save(blob, `avalon-helper.json`);
+    const formattedDate = formatISO(new Date());
+    this.fileSaverService.save(blob, `avalon-helper-${formattedDate}.json`);
   }
 
   public onAddClick(): void {

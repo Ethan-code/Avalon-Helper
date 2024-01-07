@@ -25,7 +25,6 @@ export class LegacyHelperComponent implements OnInit {
   public form!: FormGroup;
 
   private defaultPlayerCount = 5;
-  private defulatLakeCount = 0;
   private totalRoundCount = 5;
   private totalVoteCount = 25;
 
@@ -85,10 +84,8 @@ export class LegacyHelperComponent implements OnInit {
       }
     }
 
-    if (this.playerCount >= 7) {
+    if (this.playerCount === 7) {
       this.lakeResultFormArray.controls.push(this.createLakeResultControl());
-    } else {
-      this.lakeResultFormArray.clear();
     }
   }
 
@@ -98,6 +95,10 @@ export class LegacyHelperComponent implements OnInit {
       for (let i = 0; i < this.totalVoteCount; i++) {
         this.getVoteFormArray(i).controls.pop();
       }
+    }
+
+    if (this.playerCount < 7) {
+      this.lakeResultFormArray.clear();
     }
   }
 

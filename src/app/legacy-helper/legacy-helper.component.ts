@@ -7,7 +7,7 @@ import {
   FormGroup,
   ReactiveFormsModule,
 } from "@angular/forms";
-import {CAMP_PLAYER_COUNT_SETTING, Game, QUEST_PLAYER_COUNT_SETTING, RoundResult} from "./model";
+import {CAMP_PLAYER_COUNT_SETTING, QUEST_PLAYER_COUNT_SETTING, RoundResult} from "./model";
 
 enum LakeResultEnum {
   NotYet = "NotYet",
@@ -25,7 +25,6 @@ enum LakeResultEnum {
 export class LegacyHelperComponent implements OnInit {
   public form!: FormGroup;
 
-  public game!: Game;
   private defaultPlayerCount = 5;
   private totalVoteCount = 25;
 
@@ -62,12 +61,7 @@ export class LegacyHelperComponent implements OnInit {
 
   public ngOnInit(): void {
     this.form = this.initForm();
-    this.game = this.initGame(this.defaultPlayerCount);
-
-    this.playerFormArray.controls[0].get("");
   }
-
-  public onSubmit(): void {}
 
   public onFullscreenClick(): void {
     if (!this.isFullscreen) {
@@ -226,9 +220,5 @@ export class LegacyHelperComponent implements OnInit {
       result: ["NotYet"],
       evilPlayerCount: 0,
     });
-  }
-
-  private initGame(totalPlayerCount: number): Game {
-    return new Game(totalPlayerCount);
   }
 }

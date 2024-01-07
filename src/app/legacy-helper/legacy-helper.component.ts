@@ -166,7 +166,10 @@ export class LegacyHelperComponent implements OnInit {
       });
     } else if (currentResult === RoundStatus.Failure) {
       const evilPlayerCount = resultControl.get("evilPlayerCount")?.value;
-      if (evilPlayerCount < CAMP_PLAYER_COUNT_SETTING[this.playerCount].evil) {
+      if (
+        evilPlayerCount < CAMP_PLAYER_COUNT_SETTING[this.playerCount].evil &&
+        evilPlayerCount < QUEST_PLAYER_COUNT_SETTING[this.playerCount][roundIndex + 1]
+      ) {
         resultControl.patchValue({
           result: RoundStatus.Failure,
           evilPlayerCount: evilPlayerCount + 1,

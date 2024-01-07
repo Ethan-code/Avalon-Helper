@@ -30,6 +30,25 @@
         </button>
       </div>
 
+      <!-- Quest Result -->
+      <div class="result">
+        <ng-container formArrayName="results">
+          <div
+            *ngFor="let result of resultFormArray.controls; let i = index; trackBy: trackByFn"
+            class="game"
+            [style.background-position]="getRoundResult(result)"
+            [style.color]="getRoundTextColor(result)"
+            (click)="onRoundClick(result, i)"
+          >
+            {{ getBadCountsOrMax(i) }}
+            <span class="hidden" [formGroupName]="i">
+              <input type="checkbox" formControlName="result" />
+              <input type="number" formContronName="evilPlayerCount" />
+            </span>
+          </div>
+        </ng-container>
+      </div>
+
       <!-- Import Game Data -->
       <div class="mt-3 ml-3">
         <button
@@ -49,25 +68,6 @@
         >
           <span>Export</span>
         </button>
-      </div>
-
-      <!-- Quest Result -->
-      <div class="result">
-        <ng-container formArrayName="results">
-          <div
-            *ngFor="let result of resultFormArray.controls; let i = index; trackBy: trackByFn"
-            class="game"
-            [style.background-position]="getRoundResult(result)"
-            [style.color]="getRoundTextColor(result)"
-            (click)="onRoundClick(result, i)"
-          >
-            {{ getBadCountsOrMax(i) }}
-            <span class="hidden" [formGroupName]="i">
-              <input type="checkbox" formControlName="result" />
-              <input type="number" formContronName="evilPlayerCount" />
-            </span>
-          </div>
-        </ng-container>
       </div>
     </div>
 

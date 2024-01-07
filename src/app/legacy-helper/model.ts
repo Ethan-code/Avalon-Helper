@@ -87,3 +87,9 @@ export enum RoundResult {
   Failure = "Failure",
   NoPlay = "NoPlay",
 }
+
+export enum LakeResult {
+  NotYet = "NotYet",
+  Good = "Good",
+  Bad = "Bad",
+}

@@ -110,24 +110,34 @@
 
     <!-- Lady of the Lake -->
     <div class="lakeDiv" [style.left.px]="640 + 70 * (playerCount - 5)">
-      <div
-        *ngFor="let lakeResult of lakeResults; let i = index; trackBy: trackByFn"
-        class="lake"
-        [ngClass]="{hiddenObj: showlakeLogics[i]}"
-      >
-        <div class="dropdown">
-          <select class="players">
-            <option *ngFor="let playerCount of playerFormArray.controls" [value]="playerCount">
-              {{ playerCount }} 號
-            </option>
-          </select>
-        </div>
+      <ng-container formArrayName="lakeResults">
         <div
-          class="gameLake"
-          [style.background-position]="getLakeResult(lakeResult)"
-          (click)="onLakeClick(lakeResult, i)"
-        ></div>
-      </div>
+          *ngFor="let lakeResult of lakeResultFormArray.controls; let i = index; trackBy: trackByFn"
+          class="lake"
+        >
+          <ng-container [formGroupName]="i">
+            <div class="dropdown">
+              <select class="players" formControlName="targetPlayerIndex">
+                <option
+                  *ngFor="let playerCount of playerFormArray.controls; let i = index"
+                  [value]="i"
+                >
+                  {{ i + 1 }} 號
+                </option>
+              </select>
+            </div>
+            <div
+              class="gameLake"
+              [style.background-position]="getLakeResultPostion(lakeResult)"
+              (click)="onLakeClick(lakeResult)"
+            >
+              <div class="hidden">
+                <input type="text" formControlName="result" />
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </ng-container>
     </div>
   </div>
 </form>

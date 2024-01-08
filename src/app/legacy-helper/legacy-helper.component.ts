@@ -283,15 +283,15 @@ export class LegacyHelperComponent implements OnInit {
 
   private createVoteControl(): FormGroup {
     return this.formBuilder.group({
-      vote: [false],
       isMember: [false],
+      vote: [false],
     });
   }
 
   private createLakeResultControl(): FormGroup {
     return this.formBuilder.group({
-      targetPlayerIndex: null,
       result: [LakeStatus.NotYet],
+      targetPlayerIndex: null,
     });
   }
 

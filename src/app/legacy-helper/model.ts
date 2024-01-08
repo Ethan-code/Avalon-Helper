@@ -7,13 +7,13 @@ export interface Round {
 }
 
 export interface VoteResult {
-  vote: boolean;
   isMember: boolean;
+  vote: boolean;
 }
 
 export interface LakeResult {
-  targetPlayerIndex: number;
   result: LakeStatus;
+  targetPlayerIndex: number;
 }
 export interface RoundResult {
   result: RoundStatus;

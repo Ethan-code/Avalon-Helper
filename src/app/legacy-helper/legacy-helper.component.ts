@@ -50,18 +50,6 @@ export class LegacyHelperComponent implements OnInit {
 
   private isFullscreen: boolean = false;
 
-  public get showlakeLogics(): boolean[] {
-    const lakeResult1 = this.lakeResultFormArray.controls[0].get("result")?.value;
-    const lakeResult2 = this.lakeResultFormArray.controls[1].get("result")?.value;
-    return [
-      this.playerCount < 7,
-      this.playerCount < 7 || lakeResult1 === LakeStatus.NotYet,
-      this.playerCount < 7 ||
-        lakeResult1 === LakeStatus.NotYet ||
-        lakeResult2 === LakeStatus.NotYet,
-    ];
-  }
-
   public get playerCount(): number {
     return this.playerFormArray.length;
   }
@@ -71,7 +59,7 @@ export class LegacyHelperComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private fileSaverService: FileSaverService) {}
 
   public ngOnInit(): void {
-    this.form = this.initForm(this.defaultPlayerCount, 0);
+    this.form = this.initForm(this.defaultPlayerCount);
   }
 
   public onFullscreenClick(): void {
@@ -109,9 +97,8 @@ export class LegacyHelperComponent implements OnInit {
         results: RoundResult[];
       };
       const playerCount = gameData.players.length;
-      const lakReResultCount = gameData.lakeResults.length;
 
-      this.form = this.initForm(playerCount, lakReResultCount);
+      this.form = this.initForm(playerCount);
       setTimeout(() => {
         this.form.setValue(gameData);
       }, 0);
@@ -138,8 +125,7 @@ export class LegacyHelperComponent implements OnInit {
     }
 
     // reset form value
-    const lakeResultCount = this.playerCount >= 7 ? 1 : 0;
-    this.form = this.initForm(this.playerCount, lakeResultCount);
+    this.form = this.initForm(this.playerCount);
   }
 
   public onDeleteClick() {
@@ -151,8 +137,7 @@ export class LegacyHelperComponent implements OnInit {
     }
 
     // reset form value
-    const lakeResultCount = this.playerCount >= 7 ? 1 : 0;
-    this.form = this.initForm(this.playerCount, lakeResultCount);
+    this.form = this.initForm(this.playerCount);
   }
 
   public onRoundClick(resultControl: AbstractControl, roundIndex: number): void {
@@ -192,7 +177,6 @@ export class LegacyHelperComponent implements OnInit {
       lakeResultControl.patchValue({
         result: LakeStatus.Bad,
       });
-      this.lakeResultFormArray.controls.push(this.createLakeResultControl());
     } else if (lakeResult === LakeStatus.Bad) {
       lakeResultControl.patchValue({
         result: LakeStatus.Good,
@@ -201,7 +185,6 @@ export class LegacyHelperComponent implements OnInit {
       lakeResultControl.patchValue({
         result: LakeStatus.NotYet,
       });
-      this.lakeResultFormArray.controls.pop();
     }
   }
 
@@ -253,7 +236,8 @@ export class LegacyHelperComponent implements OnInit {
     return this.roundFormArray.controls[index].get("votes") as FormArray;
   }
 
-  private initForm(playerCount: number, lakeResultCount: number): FormGroup {
+  private initForm(playerCount: number): FormGroup {
+    const lakeResultCount = playerCount >= 7 ? 3 : 0;
     return this.formBuilder.group({
       players: this.formBuilder.array(this.createPlayerControls(playerCount)),
       rounds: this.formBuilder.array(this.createRoundControls(playerCount)),

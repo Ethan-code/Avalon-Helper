@@ -146,6 +146,7 @@
           <ng-container [formGroupName]="i">
             <div class="dropdown">
               <select class="players" formControlName="targetPlayerIndex">
+                <option value="null">未使用</option>
                 <option
                   *ngFor="let playerCount of playerFormArray.controls; let i = index"
                   [value]="i"

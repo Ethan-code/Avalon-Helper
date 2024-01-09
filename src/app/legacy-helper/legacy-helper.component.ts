@@ -110,6 +110,10 @@ export class LegacyHelperComponent implements OnInit {
     reader.readAsText(file);
   }
 
+  public onFileClick(event: Event) {
+    (event.target as HTMLInputElement).value = '';
+  }
+
   public onExportClick(): void {
     const jsonString = JSON.stringify(this.form.getRawValue());
     const blob = new Blob([jsonString], {type: "application/json"});

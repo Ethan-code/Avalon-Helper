@@ -32,6 +32,7 @@ export class LegacyHelperComponent implements OnInit {
   public form!: FormGroup;
 
   private defaultPlayerCount = 5;
+  private lakeResultCount = 3;
   private totalRoundCount = 5;
   private totalVoteCount = 25;
 
@@ -237,11 +238,10 @@ export class LegacyHelperComponent implements OnInit {
   }
 
   private initForm(playerCount: number): FormGroup {
-    const lakeResultCount = playerCount >= 7 ? 3 : 0;
     return this.formBuilder.group({
       players: this.formBuilder.array(this.createPlayerControls(playerCount)),
       rounds: this.formBuilder.array(this.createRoundControls(playerCount)),
-      lakeResults: this.formBuilder.array(this.createLakeResultControls(lakeResultCount)),
+      lakeResults: this.formBuilder.array(this.createLakeResultControls()),
       results: this.formBuilder.array(this.createResultControls()),
     });
   }
@@ -255,8 +255,8 @@ export class LegacyHelperComponent implements OnInit {
     return Array.from({length: this.totalVoteCount}, () => this.createRoundControl(playerCount));
   }
 
-  private createLakeResultControls(lakeResultCount: number): FormGroup[] {
-    return Array.from({length: lakeResultCount}, () => this.createLakeResultControl());
+  private createLakeResultControls(): FormGroup[] {
+    return Array.from({length: this.lakeResultCount}, () => this.createLakeResultControl());
   }
 
   private createVoteControls(playerCount: number): FormGroup[] {

@@ -57,7 +57,13 @@
         >
           <span>Import</span>
         </button>
-        <input #fileInput type="file" (change)="onFileSelected($event)" accept=".json" class="hidden" />
+        <input
+          #fileInput
+          type="file"
+          (change)="onFileSelected($event)"
+          accept=".json"
+          class="hidden"
+        />
       </div>
 
       <!-- Export Game Data -->
@@ -130,7 +136,7 @@
     </div>
 
     <!-- Lady of the Lake -->
-    <div class="lakeDiv" [style.left.px]="640 + 70 * (playerCount - 5)">
+    <div class="lakeDiv" [style.left.px]="640 + 70 * (playerCount - 5)" *ngIf="playerCount >= 7">
       <ng-container formArrayName="lakeResults">
         <div
           *ngFor="let lakeResult of lakeResultFormArray.controls; let i = index; trackBy: trackByFn"
